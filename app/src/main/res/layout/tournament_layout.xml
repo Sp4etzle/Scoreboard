@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/SpaceTop" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/SpaceLeft" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Gamemode:"
+        android:id="@+id/game_gamemode_info"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18dp" />
+
+    <Spinner
+        style="?android:attr/spinnerDropDownItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tournament_gamemode_spinner"
+        android:textSize="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/SpaceTop"
+        android:layout_alignStart="@+id/SpaceTop"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Player:"
+        android:id="@+id/tournament_player_info"
+        android:textSize="18dp"
+        android:layout_below="@+id/game_gamemode_info"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tournament_player_spinner"
+        android:textSize="18dp"
+        android:layout_alignTop="@+id/tournament_player_info"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/SpaceTop"
+        android:layout_toEndOf="@+id/SpaceTop"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Add"
+        android:id="@+id/tournament_addname_button"
+        android:background="@android:color/holo_green_light"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:longClickable="false"
+        android:layout_below="@+id/tournament_addname_info"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tournament_addname_edittext"
+        android:layout_alignBottom="@+id/tournament_addname_button"
+        android:layout_toEndOf="@+id/SpaceLeft"
+        android:layout_toRightOf="@+id/tournament_addname_button"
+        android:layout_alignTop="@+id/tournament_addname_button"
+        android:layout_toStartOf="@+id/tournament_addname_button"
+        android:layout_toLeftOf="@+id/tournament_addname_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Add a new Player to list"
+        android:id="@+id/tournament_addname_info"
+        android:layout_below="@+id/tournament_player_spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tournament_namelist_scrollbar"
+        android:layout_below="@+id/tournament_addname_edittext"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tournament_namelist_layout">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Haifische"
+                android:id="@+id/team_01"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eisbären"
+                android:id="@+id/button2"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eagles"
+                android:id="@+id/button3"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Flying Ducks"
+                android:id="@+id/button4"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wölfe"
+                android:id="@+id/button5"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tigers"
+                android:id="@+id/button6"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bulls"
+                android:id="@+id/button7"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="German Hockey"
+                android:id="@+id/button8"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Yellow"
+                android:id="@+id/button9"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Blacky"
+                android:id="@+id/button10"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team USA"
+                android:id="@+id/button11"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bier4free"
+                android:id="@+id/button12"
+                android:longClickable="true"
+                android:textAlignment="gravity"
+                android:gravity="left|center_vertical|start"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:id="@+id/SpaceButtom"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tornament Start"
+        android:id="@+id/game_tournament_button"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+        android:background="#003f61"
+        android:textSize="15dp" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correction"
+        android:id="@+id/game_correction_switch"
+        android:textSize="20dp"
+        android:checked="false"
+        android:clickable="false"
+        android:textColor="#003f61"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/game_time_gain_button"
+        android:layout_alignTop="@+id/game_time_current_button"
+        android:layout_toLeftOf="@+id/game_time_current_button"
+        android:layout_toStartOf="@+id/game_time_current_button"
+        android:textStyle="bold"
+        android:textColor="#fafafa"
+        android:background="#003f61"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:23"
+        android:id="@+id/game_time_current_button"
+        android:background="#003f61"
+        android:textColor="#ffffff"
+        android:textSize="50dp"
+        android:layout_below="@+id/game_tournament_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:id="@+id/game_time_decrease_button"
+        android:layout_alignTop="@+id/game_time_current_button"
+        android:layout_toRightOf="@+id/game_time_current_button"
+        android:layout_toEndOf="@+id/game_time_current_button"
+        android:textStyle="bold"
+        android:textColor="#fafafa"
+        android:background="#003f61"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="GameMode:"
+        android:id="@+id/game_gamemode_info"
+        android:textColor="#003f61"
+        android:layout_below="@+id/game_time_current_button"
+        android:layout_toLeftOf="@+id/SpaceButtom"
+        android:layout_toStartOf="@+id/SpaceButtom"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Simple Game"
+        android:id="@+id/game_gamemode_current"
+        android:layout_alignTop="@+id/game_gamemode_info"
+        android:layout_toRightOf="@+id/game_gamemode_info"
+        android:layout_toEndOf="@+id/game_gamemode_info"
+        android:textColor="#003f61"
+        android:layout_marginLeft="5dp"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="22:13"
+        android:id="@+id/game_player_result_current"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="85dp"
+        android:textColor="#003f61"
+        android:layout_margin="10dp" />
+    //@string/standLabel- kommt in Text rein
+    //@string/time - kommt in Text rein
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/game_player_1gain_button"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/game_player_result_current"
+        android:layout_toLeftOf="@+id/game_player_result_current"
+        android:layout_toStartOf="@+id/game_player_result_current"
+        android:textColor="#fafafa"
+        android:background="#003f61" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:id="@+id/game_player_1decrease_button"
+        android:layout_alignBottom="@+id/game_player_result_current"
+        android:layout_toLeftOf="@+id/game_player_result_current"
+        android:layout_toStartOf="@+id/game_player_result_current"
+        android:textStyle="bold"
+        android:textColor="#fafafa"
+        android:background="#003f61" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/game_player_2gain_button"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/game_player_result_current"
+        android:layout_toRightOf="@+id/game_player_result_current"
+        android:layout_toEndOf="@+id/game_player_result_current"
+        android:textColor="#fafafa"
+        android:background="#003f61" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:id="@+id/game_player_2decrease_button"
+        android:layout_alignBottom="@+id/game_player_result_current"
+        android:layout_toRightOf="@+id/game_player_result_current"
+        android:layout_toEndOf="@+id/game_player_result_current"
+        android:textStyle="bold"
+        android:textColor="#fafafa"
+        android:background="#003f61" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Team Blue"
+        android:id="@+id/game_name_1_info"
+        android:layout_above="@+id/game_name_1_current"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Eisbären"
+        android:id="@+id/game_name_1_current"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/game_gamemode_info"
+        android:layout_alignEnd="@+id/game_gamemode_info"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Team Yellow"
+        android:id="@+id/game_name_2_info"
+        android:layout_above="@+id/game_name_1_current"
+        android:layout_toRightOf="@+id/SpaceButtom"
+        android:layout_toEndOf="@+id/SpaceButtom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Haifische"
+        android:id="@+id/game_name_2_current"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/SpaceButtom"
+        android:layout_toEndOf="@+id/SpaceButtom"
+        android:textSize="15dp" />
+
+</RelativeLayout>
