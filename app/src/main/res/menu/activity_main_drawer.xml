@@ -11,6 +11,10 @@
             android:icon="@mipmap/hockey_tournament"
             android:title="Tournament"/>
         <item
+            android:id="@+id/nav_table"
+            android:icon="@mipmap/table"
+            android:title="Table"/>
+        <item
             android:id="@+id/nav_history"
             android:icon="@mipmap/history"
             android:title="History"/>

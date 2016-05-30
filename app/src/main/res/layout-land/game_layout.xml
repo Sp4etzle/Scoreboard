@@ -55,7 +55,7 @@
         android:id="@+id/game_correction_switch"
         android:textSize="20dp"
         android:checked="false"
-        android:clickable="false"
+        android:clickable="true"
         android:textColor="#003f61"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -84,7 +84,7 @@
         android:id="@+id/game_time_gain_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_below="@+id/game_time_current_button"
         android:layout_alignLeft="@+id/game_time_current_button"
         android:layout_alignStart="@+id/game_time_current_button" />
@@ -97,7 +97,7 @@
         android:id="@+id/game_time_decrease_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_below="@+id/game_time_current_button"
         android:layout_alignRight="@+id/game_time_current_button"
         android:layout_alignEnd="@+id/game_time_current_button" />
@@ -124,7 +124,7 @@
         android:id="@+id/game_player_1gain_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_alignTop="@+id/game_player_result_current"
         android:layout_toLeftOf="@+id/game_player_result_current"
         android:layout_toStartOf="@+id/game_player_result_current" />
@@ -137,7 +137,7 @@
         android:id="@+id/game_player_1decrease_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_alignBottom="@+id/game_player_result_current"
         android:layout_toLeftOf="@+id/game_player_result_current"
         android:layout_toStartOf="@+id/game_player_result_current" />
@@ -150,7 +150,7 @@
         android:id="@+id/game_player_2gain_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_alignTop="@+id/game_player_result_current"
         android:layout_alignRight="@+id/game_correction_switch"
         android:layout_alignEnd="@+id/game_correction_switch" />
@@ -163,7 +163,7 @@
         android:id="@+id/game_player_2decrease_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"
+        android:background="@android:color/darker_gray"
         android:layout_alignBottom="@+id/game_player_result_current"
         android:layout_alignLeft="@+id/game_player_2gain_button"
         android:layout_alignStart="@+id/game_player_2gain_button" />

@@ -132,9 +132,11 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame,new GameFragment()).commit();
         } else if (id == R.id.nav_tournament) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new TournamentFragment()).commit();
+        } else if (id == R.id.nav_table) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
         } else if (id == R.id.nav_history) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new HistoryFragment()).commit();
-        } else if (id == R.id.nav_music) {
+        }else if (id == R.id.nav_music) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new MusicFragment()).commit();
         } else if (id == R.id.nav_settings) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new SettingsFragment()).commit();

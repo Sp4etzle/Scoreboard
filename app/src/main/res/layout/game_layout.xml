@@ -29,7 +29,7 @@
         android:id="@+id/game_correction_switch"
         android:textSize="20dp"
         android:checked="false"
-        android:clickable="false"
+        android:clickable="true"
         android:textColor="#003f61"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -46,7 +46,7 @@
         android:layout_toStartOf="@+id/game_time_current_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"/>
+        android:background="@android:color/darker_gray"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
         android:layout_toEndOf="@+id/game_time_current_button"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61"/>
+        android:background="@android:color/darker_gray"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
         android:layout_toLeftOf="@+id/game_player_result_current"
         android:layout_toStartOf="@+id/game_player_result_current"
         android:textColor="#fafafa"
-        android:background="#003f61" />
+        android:background="@android:color/darker_gray" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -136,7 +136,7 @@
         android:layout_toStartOf="@+id/game_player_result_current"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61" />
+        android:background="@android:color/darker_gray" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -149,7 +149,7 @@
         android:layout_toRightOf="@+id/game_player_result_current"
         android:layout_toEndOf="@+id/game_player_result_current"
         android:textColor="#fafafa"
-        android:background="#003f61" />
+        android:background="@android:color/darker_gray" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -162,7 +162,7 @@
         android:layout_toEndOf="@+id/game_player_result_current"
         android:textStyle="bold"
         android:textColor="#fafafa"
-        android:background="#003f61" />
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:layout_width="wrap_content"
