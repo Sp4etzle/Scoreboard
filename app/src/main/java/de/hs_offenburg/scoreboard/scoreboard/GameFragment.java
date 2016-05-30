@@ -106,6 +106,7 @@ public class GameFragment extends Fragment{
 
             }
         });
+        //Time Buttons
         //game_time_gain_button
         game_time_gain_button=(Button)gameView.findViewById(R.id.game_time_gain_button);
         game_time_gain_button.setOnClickListener(new View.OnClickListener(){
@@ -136,6 +137,7 @@ public class GameFragment extends Fragment{
 
             }
         });
+        //Tournament Button
         //game_tournament_button
         game_tournament_button=(Button)gameView.findViewById(R.id.game_tournament_button);
         game_tournament_button.setOnClickListener(new View.OnClickListener(){
