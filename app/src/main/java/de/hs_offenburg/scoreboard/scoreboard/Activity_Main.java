@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity
+public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -129,19 +129,19 @@ public class MainActivity extends AppCompatActivity
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_game) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new GameFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Game()).commit();
         } else if (id == R.id.nav_tournament) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new TournamentFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Tournament()).commit();
         } else if (id == R.id.nav_table) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new TableFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Table()).commit();
         } else if (id == R.id.nav_history) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new HistoryFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_History()).commit();
         }else if (id == R.id.nav_music) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new MusicFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Music()).commit();
         } else if (id == R.id.nav_settings) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new SettingsFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Settings()).commit();
         }else if (id == R.id.nav_imprint) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new ImprintFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Imprint()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

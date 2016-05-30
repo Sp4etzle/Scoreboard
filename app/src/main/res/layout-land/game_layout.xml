@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Tornament Start"
         android:id="@+id/game_tournament_button"

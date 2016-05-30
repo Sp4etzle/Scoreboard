@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 /**
  * Created by micha on 13.05.2016.
  */
-public class HistoryFragment extends Fragment{
+public class Fragment_Table extends Fragment{
 
     View myView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.history_layout, container, false);
+        myView = inflater.inflate(R.layout.table_layout, container, false);
         return myView;
     }
 }

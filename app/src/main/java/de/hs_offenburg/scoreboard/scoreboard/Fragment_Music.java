@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Created by micha on 13.05.2016.
  */
-public class MusicFragment extends Fragment{
+public class Fragment_Music extends Fragment{
 
     View myView;
 

@@ -11,11 +11,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
-
 /**
  * Created by micha on 13.05.2016.
  */
-public class GameFragment extends Fragment{
+public class Fragment_Game extends Fragment{
 
     //Declare Buttons etc.
     Button game_tournament_button, game_time_gain_button, game_time_current_button, game_time_decrease_button;
@@ -26,7 +25,6 @@ public class GameFragment extends Fragment{
     Switch correction_mode_button;
 
     View gameView;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +44,7 @@ public class GameFragment extends Fragment{
                     game_player_2decrease_button.setBackgroundColor(Color.rgb(0,63,97));
                     game_time_gain_button.setBackgroundColor(Color.rgb(0,63,97));
                     game_time_decrease_button.setBackgroundColor(Color.rgb(0,63,97));
-                    if (state_tournament_running == true && state_game_running == true){
-                        game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
-                        game_tournament_button.setText("Cancel Game");
-                    }else if(state_tournament_running == true && state_game_running == false){
-                        game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
-                        game_tournament_button.setText("Cancel Tournament");
-                    }
+                    updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode on",Toast.LENGTH_SHORT).show();
                 }else{
                     correction_mode = false;
@@ -62,13 +54,7 @@ public class GameFragment extends Fragment{
                     game_player_2decrease_button.setBackgroundColor(Color.GRAY);
                     game_time_gain_button.setBackgroundColor(Color.GRAY);
                     game_time_decrease_button.setBackgroundColor(Color.GRAY);
-                    if (state_tournament_running == true && state_game_running == true){
-                        game_tournament_button.setBackgroundColor(Color.GRAY);
-                        game_tournament_button.setText("Tournament Runs");
-                    }else if (state_tournament_running == true && state_game_running == false){
-                        game_tournament_button.setBackgroundColor(Color.GRAY);
-                        game_tournament_button.setText("Start next Game");
-                    }
+                    updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode off",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -179,32 +165,30 @@ public class GameFragment extends Fragment{
                 //Action for game_tournament_button
                 //TODO: give game_tournament_button an Action
             if (correction_mode == true && state_tournament_running == false){
-                    //Action at Tournament Start
-                    game_tournament_button.setBackgroundColor(Color.GRAY);
-                    game_tournament_button.setText("Tournament Runs");
-                    state_tournament_running = true;
-                    startGame();
-                }else if (correction_mode == true && state_tournament_running == true && state_game_running == true){
-                    //Action if Tournament Runs and Game Runs
-                    cancelGame();
-                    game_tournament_button.setText("Cancel Tournament");
-                }else if (correction_mode == true && state_tournament_running == true && state_game_running == false){
-                    //Action if Tournament Runs but Game Stopped
-                    stopTournament();
-                }else if (correction_mode == false && state_tournament_running == true && state_game_running == false){
-                    //Shows Info how to act if Game Stopped and Correction Mode Off
-                    Toast.makeText(getActivity().getApplicationContext(),"Press Time Button to start next Game",Toast.LENGTH_SHORT).show();
-                }else if(correction_mode == false && state_tournament_running == false){
-                    //Action at Tournament Start
-                    game_tournament_button.setBackgroundColor(Color.GRAY);
-                    game_tournament_button.setText("Tournament Runs");
-                    state_tournament_running = true;
-                    startGame();
-                }
+                //Action at Tournament Start
+                state_tournament_running = true;
+                startGame();
+                updateButtons();
+            }else if (correction_mode == true && state_tournament_running == true && state_game_running == true){
+                //Action if Tournament Runs and Game Runs
+                cancelGame();
+                updateButtons();
+            }else if (correction_mode == true && state_tournament_running == true && state_game_running == false){
+                //Action if Tournament Runs but Game Stopped
+                stopTournament();
+            }else if (correction_mode == false && state_tournament_running == true && state_game_running == false){
+                //Shows Info how to act if Game Stopped and Correction Mode Off
+                Toast.makeText(getActivity().getApplicationContext(),"Press Time Button to start next Game",Toast.LENGTH_SHORT).show();
+            }else if(correction_mode == false && state_tournament_running == false){
+                //Action at Tournament Start
+                state_tournament_running = true;
+                startGame();
+                updateButtons();
+            }
             }
         });
 
-
+        updateButtons();
 
         return gameView;
     }
@@ -222,6 +206,44 @@ public class GameFragment extends Fragment{
     }
     public void stopTournament(){
         Toast.makeText(getActivity().getApplicationContext(),"Tournament canceled",Toast.LENGTH_SHORT).show();
-        MainActivity.resetApp();
+        //TODO: Save Tournament Stats in List
+        resetGameActivity();
+    }
+
+    public void resetGameActivity(){
+        correction_mode = false;
+        state_game_running = false;
+        state_tournament_running = false;
+        updateButtons();
+    }
+
+    public void updateButtons(){
+
+        //Tournament Button
+        if (correction_mode == false && state_tournament_running == false && state_game_running == false){
+            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_tournament_button.setText("Start Tournament");
+        }else if(correction_mode == false && state_tournament_running == false && state_game_running == true){
+            game_tournament_button.setBackgroundColor(Color.GRAY);
+            game_tournament_button.setText("Game Runs");
+        }else if(correction_mode == false && state_tournament_running == true && state_game_running == false){
+            game_tournament_button.setBackgroundColor(Color.GRAY);
+            game_tournament_button.setText("Start next Game");
+        }else if(correction_mode == false && state_tournament_running == true && state_game_running == true){
+            game_tournament_button.setBackgroundColor(Color.GRAY);
+            game_tournament_button.setText("Tournament Runs");
+        }else if(correction_mode == true && state_tournament_running == false && state_game_running == false){
+            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_tournament_button.setText("Start Tournament");
+        }else if(correction_mode == true && state_tournament_running == false && state_game_running == true){
+            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_tournament_button.setText("Stop Game");
+        }else if(correction_mode == true && state_tournament_running == true && state_game_running == false){
+            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_tournament_button.setText("Cancel Tournament");
+        }else if(correction_mode == true && state_tournament_running == true && state_game_running == true){
+            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_tournament_button.setText("Cancel Game");
+        }
     }
 }

@@ -12,7 +12,7 @@ import android.widget.Toast;
 /**
  * Created by micha on 13.05.2016.
  */
-public class TournamentFragment extends Fragment{
+public class Fragment_Tournament extends Fragment{
 
     //Declare Buttons etc.
     Button tournament_addname_button;
