@@ -28,7 +28,7 @@ public class GameFragment extends Fragment{
     //Declare Buttons etc.
     Button game_tournament_button, game_time_gain_button, game_time_current_button, game_time_decrease_button;
     Button game_player_1gain_button, game_player_1decrease_button, game_player_2gain_button, game_player_2decrease_button;
-    public static Boolean correction_mode;
+    public static Boolean correction_mode = false;
     Switch correction_mode_button;
 
     View gameView;
@@ -73,7 +73,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1gain_button
                 //TODO: give game_player_1gain_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //game_player_1decrease_button
@@ -83,7 +87,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1decrease_button
                 //TODO: give game_player_1decrease_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //game_player_2gain_button
@@ -93,7 +101,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2gain_button
                 //TODO: give game_player_2gain_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //game_player_2decrease_button
@@ -103,7 +115,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2decrease_button
                 //TODO: give game_player_2decrease_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //Time Buttons
@@ -114,7 +130,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_time_gain_button
                 //TODO: give game_time_gain_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //game_player_2decrease_button
@@ -124,7 +144,11 @@ public class GameFragment extends Fragment{
             public void onClick(View v){
                 //Action for game_time_decrease_button
                 //TODO: give game_time_decrease_button an Action
+                if (correction_mode == false){
+                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
+                }else{
 
+                }
             }
         });
         //game_time_current_button
