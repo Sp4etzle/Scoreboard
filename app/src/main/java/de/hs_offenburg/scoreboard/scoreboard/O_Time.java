@@ -14,7 +14,7 @@ public class O_Time implements I_Time{
     int min;
     int hour;
 
-    //The Time which is used to correct the current Time
+    //The Time which is used to correct the current Time with 1 button press
     int correctSec = 0;
     int correctMin = 1;
     int correctHour = 0;
@@ -90,7 +90,7 @@ public class O_Time implements I_Time{
 
     //Correct Time
     @Override
-    public void setCorrecteSec(int correctSec) {
+    public void setCorrectSec(int correctSec) {
         this.correctSec = correctSec;
     }
 
@@ -122,24 +122,48 @@ public class O_Time implements I_Time{
     //Time Function
     @Override
     public void correctIncreaseTime() {
-        this.sec = this.sec + this.correctSec;
-        this.min = this.min + this.correctMin;
-        this.hour = this.hour + this.correctHour;
+        increaseTime(this.correctSec, this.correctMin, this.correctHour);
     }
 
     //TODO: Fill Time Function
     @Override
     public void correctDecreaseTime() {
+        decreaseTime(this.correctSec, this.correctMin, this.correctHour);
+    }
+
+    @Override
+    public void increaseTimeSec() {
+        increaseTime(1,0,0);
+    }
+
+    @Override
+    public void decreaseTimeSec() {
+        decreaseTime(1,0,0);
+    }
+
+    @Override
+    public void increaseTime(int isec, int imin, int ihour) {
 
     }
 
     @Override
-    public void increaseTime() {
+    public void decreaseTime(int isec, int imin, int ihour) {
 
     }
 
     @Override
-    public Boolean decreaseTime() {
-        return null;
+    public void setTimeNull(){
+        this.sec = 0;
+        this.min = 0;
+        this.hour = 0;
+    }
+
+    @Override
+    public Boolean isTimeNull(){
+        Boolean timeIsNull = false;
+        if(this.sec <= 0 && this.min <= 0 && this.hour <= 0){
+            timeIsNull = true;
+        }
+        return timeIsNull;
     }
 }

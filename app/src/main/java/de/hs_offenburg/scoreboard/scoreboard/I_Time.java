@@ -22,7 +22,7 @@ public interface I_Time {
     int getDefaultTimeHour();
 
     //correct Time
-    void setCorrecteSec(int correctSec);
+    void setCorrectSec(int correctSec);
     int getCorrectSec();
     void setCorrectMin(int correctMin);
     int getCorrectMin();
@@ -32,6 +32,13 @@ public interface I_Time {
     //Time function
     void correctIncreaseTime();
     void correctDecreaseTime();
-    void increaseTime();
-    Boolean decreaseTime();
+
+    void increaseTimeSec();
+    void decreaseTimeSec();
+
+    void increaseTime(int isec, int imin, int ihour);
+    void decreaseTime(int isec, int imin, int ihour);
+
+    void setTimeNull();
+    Boolean isTimeNull();
 }
