@@ -4,22 +4,29 @@ package de.hs_offenburg.scoreboard.scoreboard;
  * Created by micha on 31.05.2016.
  */
 public class O_Time implements I_Time{
+    //The Default Time for the Gamestart
     int defaultSec = 0;
     int defaultMin = 15;
     int defaultHour = 0;
+
+    //The Current Time for the Game
     int sec;
     int min;
     int hour;
+
+    //The Time which is used to correct the current Time
     int correctSec = 0;
     int correctMin = 1;
     int correctHour = 0;
 
+    //create a default Time
     public O_Time(){
         this.sec = getDefaultTimeSec();
         this.min = getDefaultTimeMin();
         this.hour = getDefaultTimeHour();
     }
 
+    //Current Time
     @Override
     public void setTimeSec(int timeSec) {
         this.sec = timeSec;
@@ -50,6 +57,7 @@ public class O_Time implements I_Time{
         return this.hour;
     }
 
+    //Default Time
     @Override
     public void setDefaultTimeSec(int DefaultTimeSec) {
         this.defaultSec = DefaultTimeSec;
@@ -80,6 +88,7 @@ public class O_Time implements I_Time{
         return this.defaultHour;
     }
 
+    //Correct Time
     @Override
     public void setCorrecteSec(int correctSec) {
         this.correctSec = correctSec;
@@ -110,6 +119,7 @@ public class O_Time implements I_Time{
         return this.correctHour;
     }
 
+    //Time Function
     @Override
     public void correctIncreaseTime() {
         this.sec = this.sec + this.correctSec;
@@ -117,6 +127,7 @@ public class O_Time implements I_Time{
         this.hour = this.hour + this.correctHour;
     }
 
+    //TODO: Fill Time Function
     @Override
     public void correctDecreaseTime() {
 
@@ -128,7 +139,7 @@ public class O_Time implements I_Time{
     }
 
     @Override
-    public void decreaseTime() {
-
+    public Boolean decreaseTime() {
+        return null;
     }
 }
