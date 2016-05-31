@@ -27,6 +27,7 @@ public class O_Time implements I_Time{
     }
 
     //Current Time
+    //get and set current time
     @Override
     public void setTimeSec(int timeSec) {
         this.sec = timeSec;
@@ -58,6 +59,9 @@ public class O_Time implements I_Time{
     }
 
     //Default Time
+    //get and set default time
+    //TODO: Muss evtl. irgendwoanders abgespeichert und abgerufen werden
+    //      Selbiges gilt für CorrectTime
     @Override
     public void setDefaultTimeSec(int DefaultTimeSec) {
         this.defaultSec = DefaultTimeSec;
@@ -89,6 +93,7 @@ public class O_Time implements I_Time{
     }
 
     //Correct Time
+    //get and set the correct time
     @Override
     public void setCorrectSec(int correctSec) {
         this.correctSec = correctSec;
@@ -120,17 +125,18 @@ public class O_Time implements I_Time{
     }
 
     //Time Function
+    //correct time (used by button)
     @Override
     public void correctIncreaseTime() {
-        increaseTime(this.correctSec, this.correctMin, this.correctHour);
+        increaseTime(getCorrectSec(), getCorrectMin(), getCorrectHour());
     }
 
-    //TODO: Fill Time Function
     @Override
     public void correctDecreaseTime() {
-        decreaseTime(this.correctSec, this.correctMin, this.correctHour);
+        decreaseTime(getCorrectSec(), getCorrectMin(), getCorrectHour());
     }
 
+    //increase or decrease only 1 sec (used by timer)
     @Override
     public void increaseTimeSec() {
         increaseTime(1,0,0);
@@ -141,16 +147,24 @@ public class O_Time implements I_Time{
         decreaseTime(1,0,0);
     }
 
+    //TODO: Fill Time Function
+    //increase or decrease time (used by functions)
     @Override
     public void increaseTime(int isec, int imin, int ihour) {
+        //Muss die aktuelle Zeit um den Betrag erhöhen
+        //Dabei muss darauf geachtet werden, das sec von 0-60 gehen
+        //(Falls auf 30 sec, 45 sec drauf gerechnet werden müssen...
 
     }
 
     @Override
     public void decreaseTime(int isec, int imin, int ihour) {
+        //Hierbei gilt selbiges wie bei increase Time
+        //Außerdem muss immer nach isTimeNull abgefragt werden
 
     }
 
+    //time null polling
     @Override
     public void setTimeNull(){
         this.sec = 0;
