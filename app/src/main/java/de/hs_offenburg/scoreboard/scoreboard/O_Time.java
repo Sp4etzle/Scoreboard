@@ -60,8 +60,7 @@ public class O_Time implements I_Time{
 
     //Default Time
     //get and set default time
-    //TODO: Muss evtl. irgendwoanders abgespeichert und abgerufen werden
-    //      Selbiges gilt für CorrectTime
+    //TODO: Muss evtl. irgendwoanders abgespeichert und abgerufen werden, selbiges gilt für CorrectTime
     @Override
     public void setDefaultTimeSec(int DefaultTimeSec) {
         this.defaultSec = DefaultTimeSec;
@@ -147,20 +146,65 @@ public class O_Time implements I_Time{
         decreaseTime(1,0,0);
     }
 
-    //TODO: Fill Time Function
     //increase or decrease time (used by functions)
     @Override
     public void increaseTime(int isec, int imin, int ihour) {
-        //Muss die aktuelle Zeit um den Betrag erhöhen
-        //Dabei muss darauf geachtet werden, das sec von 0-60 gehen
-        //(Falls auf 30 sec, 45 sec drauf gerechnet werden müssen...
-
+        //try to increase time until all parameter are 0
+        while(ihour > 0 || imin > 0 || isec > 0) {
+            if (ihour > 0) {
+                if (this.hour < 99){
+                    this.hour++;
+                }
+                ihour--;
+            }
+            if (imin > 0) {
+                this.min++;
+                if (this.min >= 60) {
+                    ihour++;
+                    this.min = 0;
+                }
+                imin--;
+            }
+            if (isec > 0) {
+                this.sec++;
+                if (this.sec >= 60) {
+                    imin++;
+                    this.sec = 0;
+                }
+                isec--;
+            }
+        }
     }
 
     @Override
     public void decreaseTime(int isec, int imin, int ihour) {
-        //Hierbei gilt selbiges wie bei increase Time
-        //Außerdem muss immer nach isTimeNull abgefragt werden
+        //try to decrease time until parameter are 0 or time is 0 (followed by action)
+        while(ihour > 0 || imin > 0 || isec > 0) {
+            if (isec > 0){
+                this.sec--;
+                if (this.sec <= 0){
+                    imin++;
+                    this.sec = 59;
+                }
+                isec--;
+            }
+            if (imin > 0){
+                this.min--;
+                if (this.min <= 0){
+                    ihour++;
+                    this.min = 59;
+                }
+                imin--;
+            }
+            if (ihour > 0){
+                this.hour--;
+                ihour--;
+            }
+            if (isTimeNull() == true){
+                setTimeNull();
+                //TODO: Fill with Action for Counter = Null
+            }
+        }
 
     }
 
