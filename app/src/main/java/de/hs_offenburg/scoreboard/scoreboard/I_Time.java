@@ -39,6 +39,6 @@ public interface I_Time {
     void increaseTime(int isec, int imin, int ihour);
     void decreaseTime(int isec, int imin, int ihour);
 
-    void setTimeNull();
+    void setTimeNull();//LALALALLA
     Boolean isTimeNull();
 }
