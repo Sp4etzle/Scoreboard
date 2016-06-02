@@ -4,10 +4,12 @@ package de.hs_offenburg.scoreboard.scoreboard;
  * Created by micha on 31.05.2016.
  */
 public class O_Result implements I_Result{
-    int pointTeam1 = 0;
-    int pointTeam2 = 0;
+    int pointTeam1;
+    int pointTeam2;
 
     public O_Result() {
+        pointTeam1 = 0;
+        pointTeam2 = 0;
     }
 
     @Override
@@ -32,12 +34,12 @@ public class O_Result implements I_Result{
 
     @Override
     public void increasePointTeam1() {
-        this.pointTeam1++;
+            this.pointTeam1++;
     }
 
     @Override
     public void increasePointTeam2() {
-        this.pointTeam2++;
+            this.pointTeam2++;
     }
 
     @Override
@@ -52,5 +54,18 @@ public class O_Result implements I_Result{
         if (this.pointTeam2 >= 1){
             this.pointTeam2--;
         }
+    }
+
+    @Override
+    public void addPoints(I_Result addPoints){
+        this.pointTeam1 = this.pointTeam1 + addPoints.getPointTeam1();
+        this.pointTeam2 = this.pointTeam2 + addPoints.getPointTeam2();
+    }
+
+    @Override
+    public void switchResult(){
+        int buffer = this.pointTeam1;
+        this.pointTeam1 = this.pointTeam2;
+        this.pointTeam2 = buffer;
     }
 }

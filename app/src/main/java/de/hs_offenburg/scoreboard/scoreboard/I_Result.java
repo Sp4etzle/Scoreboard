@@ -13,4 +13,7 @@ public interface I_Result {
     void increasePointTeam2();
     void decreasePointTeam1();
     void decreasePointTeam2();
+
+    void addPoints(I_Result addPoints);
+    void switchResult();
 }
