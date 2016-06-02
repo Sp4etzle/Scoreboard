@@ -7,4 +7,5 @@ public interface I_Tournament {
     String generateTournamentName();
     void generateTable(I_TeamList teamList);
     void generateRound();
+    void updateTablePoints(I_Game currentGame);
 }

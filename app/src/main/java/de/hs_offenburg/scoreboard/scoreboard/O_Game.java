@@ -44,4 +44,11 @@ public class O_Game implements I_Game{
     public I_Result result(){
         return this.result;
     }
+
+    @Override
+    public void switchTeams(){
+        I_Team teamBuffer = this.team1;
+        this.team1 = this.team2;
+        this.team2 = teamBuffer;
+    }
 }

@@ -77,4 +77,16 @@ public class O_Tournament_Type implements I_Tournament_Type{
     public Boolean getBoolean(){
         return this.side;
     }
+
+    @Override
+    public Boolean isDrawPossible(){
+        Boolean drawIsPossible = false;
+        switch (TournamentType){
+            case "ShortGame": drawIsPossible = true;
+            case "AllvsAll": drawIsPossible = true;
+            case "KOSystem": drawIsPossible = false;
+            case "Groupphase": drawIsPossible = false;
+        }
+        return drawIsPossible;
+    }
 }

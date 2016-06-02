@@ -27,7 +27,7 @@ public class O_Tournament implements I_Tournament{
         this.currentTeamList = teamList;
         this.allTeamList = teamList;
         this.currentTeamList.shuffleTeamList();
-        generateTable(currentTeamList);
+        generateTable(teamList);
         roundFinished = true;
         tournamentActive = true;
     }
@@ -114,6 +114,44 @@ public class O_Tournament implements I_Tournament{
             case "Groupphase":
                 //TODO: Logik für Gruppenphase überlegen
         }
+        //add the gameList which contain all games for one round to the current round
         this.round.add(gameList);
+    }
+
+    @Override
+    public void updateTablePoints(I_Game currentGame){
+        if (currentGame.result().getPointTeam1() == currentGame.result().getPointTeam2()){
+            //draw
+            if (this.tournamentType.isDrawPossible() == true){
+                //draw is possible
+                this.tableInfo[currentGame.team1().getTeamNumber()].increasePlayedGames();
+                this.tableInfo[currentGame.team1().getTeamNumber()].increaseDraw();
+                this.tableInfo[currentGame.team1().getTeamNumber()].increaseTablePoints(1);
+                this.tableInfo[currentGame.team1().getTeamNumber()].addGoalDifference(currentGame.result());
+
+                this.tableInfo[currentGame.team2().getTeamNumber()].increasePlayedGames();
+                this.tableInfo[currentGame.team2().getTeamNumber()].increaseDraw();
+                this.tableInfo[currentGame.team2().getTeamNumber()].increaseTablePoints(1);
+                this.tableInfo[currentGame.team2().getTeamNumber()].addGoalDifference(currentGame.result());
+            }else{
+                //1 Team have to win (because of KOSystem etc.)
+                //TODO: Irgend ne fehlermeldung da beim KO System einer gewinnen muss...
+            }
+        }else {
+            if (currentGame.result().getPointTeam1() < currentGame.result().getPointTeam2()){
+                //if second team won, switch to the winner place (first)
+                currentGame.switchTeams();
+            }
+            this.tableInfo[currentGame.team1().getTeamNumber()].increasePlayedGames();
+            this.tableInfo[currentGame.team1().getTeamNumber()].increaseVictory();
+            this.tableInfo[currentGame.team1().getTeamNumber()].increaseTablePoints(3);
+            this.tableInfo[currentGame.team1().getTeamNumber()].addGoalDifference(currentGame.result());
+
+            this.tableInfo[currentGame.team2().getTeamNumber()].increasePlayedGames();
+            this.tableInfo[currentGame.team2().getTeamNumber()].increaseLost();
+            this.tableInfo[currentGame.team2().getTeamNumber()].increaseTablePoints(0);
+            this.tableInfo[currentGame.team2().getTeamNumber()].addGoalDifference(currentGame.result());
+        }
+        //TODO: Placement updaten
     }
 }

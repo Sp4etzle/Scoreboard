@@ -10,5 +10,6 @@ public interface I_Game {
     I_Team team2();
     I_Time gameTime();
     I_Result result();
+    void switchTeams();
 
 }
