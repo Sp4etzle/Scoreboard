@@ -5,13 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.TreeSet;
 
 /**
  * Created by micha on 02.06.2016.
  */
 public class O_Tournament implements I_Tournament{
 
-    String tournamentName;
+    String tournamentName = generateTournamentName();
     I_Tournament_Type tournamentType;
     I_TeamList currentTeamList;
     I_TeamList allTeamList;
@@ -22,12 +23,10 @@ public class O_Tournament implements I_Tournament{
 
     public O_Tournament(I_Tournament_Type tournamentType,I_TeamList teamList){
         //generate table and name of tournament
-        this.tournamentName = generateTournamentName();
         this.tournamentType = tournamentType;
         this.currentTeamList = teamList;
-        this.allTeamList = teamList;
         this.currentTeamList.shuffleTeamList();
-        generateTable(teamList);
+        this.tableInfo = new I_TableInfo[teamList.getSizeTeamList()];
         roundFinished = true;
         tournamentActive = true;
     }
@@ -39,15 +38,6 @@ public class O_Tournament implements I_Tournament{
         Date currentDate = new Date();
         tournamentName = dateFormat.format(currentDate);
         return tournamentName;
-    }
-
-    @Override
-    public void generateTable(I_TeamList teamList){
-        int counter;
-        this.tableInfo = new I_TableInfo[teamList.getSizeTeamList()];
-        for (counter = 0; counter <= teamList.getSizeTeamList(); counter++){
-            this.tableInfo[counter].setPlacement(counter);
-        }
     }
 
     @Override
@@ -152,6 +142,31 @@ public class O_Tournament implements I_Tournament{
             this.tableInfo[currentGame.team2().getTeamNumber()].increaseTablePoints(0);
             this.tableInfo[currentGame.team2().getTeamNumber()].addGoalDifference(currentGame.result());
         }
-        //TODO: Placement updaten
+
+        //Update the placement based on tablePoints
+        int counter;
+        int placement = 0;
+        TreeSet<Integer> Score = new TreeSet<>();
+        //fill the different Scores in a treeSet
+        for (counter = 0; counter < tableInfo.length; counter++){
+            Score.add(tableInfo[counter].getTablePoints());
+        }
+        //give the placement based on the tablePoints in the treeSet
+        while (Score.isEmpty() == false){
+            placement++;
+            for (counter = 0; counter < tableInfo.length; counter++){
+                if (tableInfo[counter].getTablePoints() == Score.last()){
+                    tableInfo[counter].setPlacement(placement);
+                }
+            }
+            Score.pollLast();
+        }
+    }
+
+    @Override
+    public Boolean startNextGame(){
+        Boolean gamesAvaible = true;
+        //TODO: Define start of next game
+        return gamesAvaible;
     }
 }
