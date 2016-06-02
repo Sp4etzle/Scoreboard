@@ -24,4 +24,24 @@ public class O_Game implements I_Game{
     public void setStatus(Boolean gameActive) {
         this.gameActive = gameActive;
     }
+
+    @Override
+    public I_Team team1(){
+        return this.team1;
+    }
+
+    @Override
+    public I_Team team2(){
+        return this.team2;
+    }
+
+    @Override
+    public I_Time gameTime(){
+        return this.gameTime;
+    }
+
+    @Override
+    public I_Result result(){
+        return this.result;
+    }
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class O_Tournament_Type implements I_Tournament_Type{
 
     String TournamentType = null;
+    Boolean side = false;
+
     public O_Tournament_Type(String TournamentType){
        setTournamentType(TournamentType);
     }
@@ -55,27 +57,24 @@ public class O_Tournament_Type implements I_Tournament_Type{
         int teamNumber = 0;
         switch(TournamentType){
             case "ShortGame":
-                possibleTeamNumber.add(0,1);
-                possibleTeamNumber.add(1,2);
-                break;
-            case "AllvsAll":
-                for (counter = getPossibleTeamAmountMin(TournamentType); counter <= getPossibleTeamAmountMax(TournamentType); counter++) {
-                    possibleTeamNumber.add(teamNumber, counter);
-                    teamNumber++;
-                }
-                break;
-            case "KOSystem":
-                //Sollte per Fallthrough durch "Gruppenphase" gelöst werden, da dafür dieselben Bedingungen gelten
-            case "Gruppenphase":
-                for (counter = getPossibleTeamAmountMin(TournamentType); counter <= getPossibleTeamAmountMax(TournamentType); counter++) {
-                    if(counter%2 == 0){
-                        possibleTeamNumber.add(teamNumber, counter);
-                        teamNumber++;
-                    }
-                }
+                possibleTeamNumber.add(2);
                 break;
             default:
+                for (teamNumber = getPossibleTeamAmountMin(TournamentType); teamNumber <= getPossibleTeamAmountMax(TournamentType); teamNumber++) {
+                    possibleTeamNumber.add(teamNumber);
+                }
+                break;
         }
         return possibleTeamNumber;
+    }
+
+    @Override
+    public void setBoolean(Boolean side){
+        this.side = side;
+    }
+
+    @Override
+    public Boolean getBoolean(){
+        return this.side;
     }
 }

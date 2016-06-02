@@ -11,4 +11,6 @@ public interface I_Tournament_Type {
     int getPossibleTeamAmountMin(String TournamentType);
     int getPossibleTeamAmountMax(String TournamentType);
     ArrayList<Integer> isPossibleTeamNumber(String TournamentType);
+    void setBoolean(Boolean side);
+    Boolean getBoolean();
 }

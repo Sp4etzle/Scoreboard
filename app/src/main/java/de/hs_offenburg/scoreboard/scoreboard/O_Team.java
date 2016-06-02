@@ -7,7 +7,6 @@ public class O_Team implements I_Team{
 
     int teamNumber;
     String teamName;
-    int tablePoints;
 
     public O_Team(int teamNumber,String teamName){
         setTeamName(teamName);
