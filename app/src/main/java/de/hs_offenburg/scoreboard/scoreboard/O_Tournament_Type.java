@@ -69,6 +69,15 @@ public class O_Tournament_Type implements I_Tournament_Type{
     }
 
     @Override
+    public Boolean isPossibleTeamNumber (int teamNumber){
+        Boolean possibleNumber = true;
+        if(teamNumber < getPossibleTeamAmountMin(this.TournamentType) || teamNumber > getPossibleTeamAmountMax(this.TournamentType)){
+            possibleNumber = false;
+        }
+        return possibleNumber;
+    }
+
+    @Override
     public void setBoolean(Boolean side){
         this.side = side;
     }

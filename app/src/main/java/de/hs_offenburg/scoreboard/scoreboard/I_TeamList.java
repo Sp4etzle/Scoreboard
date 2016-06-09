@@ -13,4 +13,5 @@ public interface I_TeamList {
     void generateTeamNumber();
     int getSizeTeamList();
     void shuffleTeamList();
+    Boolean possibleTeamList(I_Tournament_Type tournamentType);
 }

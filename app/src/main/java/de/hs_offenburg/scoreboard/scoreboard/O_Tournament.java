@@ -15,7 +15,7 @@ public class O_Tournament implements I_Tournament{
     String tournamentName = generateTournamentName();
     I_Tournament_Type tournamentType;
     I_TeamList currentTeamList;
-    I_TeamList allTeamList;
+    I_TeamList allTeamList; //unused but might be important
     I_TableInfo[] tableInfo;
     Boolean roundFinished;
     Boolean tournamentActive;

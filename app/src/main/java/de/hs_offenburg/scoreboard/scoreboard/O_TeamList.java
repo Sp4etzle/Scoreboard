@@ -17,6 +17,8 @@ public class O_TeamList implements I_TeamList{
     public void addTeam(I_Team addTeam) {
         if (teamList.contains(addTeam) == false) {
             this.teamList.add(addTeam);
+        }else{
+            //TODO: Fehlermeldung anzeigen, dass es das Team schon gibt
         }
     }
 
@@ -61,5 +63,15 @@ public class O_TeamList implements I_TeamList{
     @Override
     public void shuffleTeamList(){
         Collections.shuffle(this.teamList);
+    }
+
+    @Override
+    public Boolean possibleTeamList(I_Tournament_Type tournamentType){
+        Boolean teamispossible = true;
+        if (tournamentType.isPossibleTeamNumber(getSizeTeamList()) == false){
+            teamispossible = false;
+        }
+        //TODO: weitere beliebige checks einfügen ob mit der liste alles inordnung ist
+        return teamispossible;
     }
 }
