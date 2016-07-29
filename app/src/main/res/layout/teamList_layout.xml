@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/SpaceTop" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/SpaceLeft" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Gamemode:"
+        android:id="@+id/game_gamemode_info"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="18dp" />
+
+    <Spinner
+        style="?android:attr/spinnerDropDownItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tournament_gamemode_spinner"
+        android:textSize="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/SpaceTop"
+        android:layout_alignStart="@+id/SpaceTop"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Add"
+        android:id="@+id/tournament_addname_button"
+        android:background="@android:color/holo_green_light"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:longClickable="false"
+        android:layout_below="@+id/tournament_addname_info"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tournament_addname_edittext"
+        android:layout_alignBottom="@+id/tournament_addname_button"
+        android:layout_toEndOf="@+id/SpaceLeft"
+        android:layout_toRightOf="@+id/tournament_addname_button"
+        android:layout_alignTop="@+id/tournament_addname_button"
+        android:layout_toStartOf="@+id/tournament_addname_button"
+        android:layout_toLeftOf="@+id/tournament_addname_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Add a new Player to list"
+        android:id="@+id/tournament_addname_info"
+        android:layout_below="@+id/tournament_gamemode_spinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/tournament_namelist_view"
+                android:nestedScrollingEnabled="false"
+                android:layout_below="@+id/tournament_addname_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:longClickable="true">
+            </ListView>
+
+
+</RelativeLayout>

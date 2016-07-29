@@ -5,7 +5,7 @@ package de.hs_offenburg.scoreboard.scoreboard;
  */
 public interface I_TeamList {
     void addTeam(I_Team addTeam);
-    void deleteTeam(I_Team deleteTeam);
+    void deleteTeam(int teamPosition);
     I_Team getTeam(int teamNumber);
     void resetTeamList();
     void saveTeamList();
@@ -14,4 +14,5 @@ public interface I_TeamList {
     int getSizeTeamList();
     void shuffleTeamList();
     Boolean possibleTeamList(I_Tournament_Type tournamentType);
+    String[] getStringTeamList();
 }

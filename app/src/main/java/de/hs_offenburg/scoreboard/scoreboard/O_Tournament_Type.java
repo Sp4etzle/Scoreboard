@@ -42,9 +42,9 @@ public class O_Tournament_Type implements I_Tournament_Type{
         int NumberOfTeamsMax = 2;
         switch(TournamentType) {
             case "ShortGame"    : NumberOfTeamsMax = 2; break;
-            case "AllvsAll"     : NumberOfTeamsMax = 10; break;
-            case "KOSystem"     : NumberOfTeamsMax = 20; break;
-            case "Groupphase"   : NumberOfTeamsMax = 20; break;
+            case "AllvsAll"     : NumberOfTeamsMax = 15; break;
+            case "KOSystem"     : NumberOfTeamsMax = 30; break;
+            case "Groupphase"   : NumberOfTeamsMax = 40; break;
             default             : NumberOfTeamsMax = 2; break;
         }
         return NumberOfTeamsMax;

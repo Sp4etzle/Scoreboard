@@ -15,15 +15,12 @@ public class O_TeamList implements I_TeamList{
     }
     @Override
     public void addTeam(I_Team addTeam) {
-        if (teamList.contains(addTeam) == false) {
-            this.teamList.add(addTeam);
-        }else{
-            //TODO: Fehlermeldung anzeigen, dass es das Team schon gibt
-        }
+        this.teamList.add(addTeam);
+            //TODO: Fehlermeldung anzeigen, falls es das Team schon gibt
     }
 
     @Override
-    public void deleteTeam(I_Team deleteTeam) {
+    public void deleteTeam(int deleteTeam) {
         this.teamList.remove(deleteTeam);
     }
 
@@ -50,14 +47,18 @@ public class O_TeamList implements I_TeamList{
     @Override
     public void generateTeamNumber(){
         int counter;
-        for (counter = 0; counter <= this.teamList.size(); counter++){
-            this.teamList.get(counter).setTeamNumber(counter);
+        for (counter = 0; counter < getSizeTeamList(); counter++){
+            this.teamList.get(counter).setTeamNumber(counter+1);
         }
     }
 
     @Override
     public int getSizeTeamList(){
-        return this.teamList.size();
+        if(this.teamList == null){
+            return 0;
+        }else {
+            return this.teamList.size();
+        }
     }
 
     @Override
@@ -73,5 +74,13 @@ public class O_TeamList implements I_TeamList{
         }
         //TODO: weitere beliebige checks einfügen ob mit der liste alles inordnung ist
         return teamispossible;
+    }
+    @Override
+    public String[] getStringTeamList(){
+        String[] teamListString = new String[getSizeTeamList()];
+        for(int z = 0; z < getSizeTeamList(); z++){
+            teamListString[z] = teamList.get(z).getTeamNumber() + " - " + teamList.get(z).getTeamName();
+        }
+        return teamListString;
     }
 }

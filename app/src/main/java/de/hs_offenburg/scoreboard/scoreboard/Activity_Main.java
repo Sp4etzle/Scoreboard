@@ -131,7 +131,7 @@ public class Activity_Main extends AppCompatActivity
         if (id == R.id.nav_game) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Game()).commit();
         } else if (id == R.id.nav_tournament) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Tournament()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_TeamList()).commit();
         } else if (id == R.id.nav_table) {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Table()).commit();
         } else if (id == R.id.nav_history) {
