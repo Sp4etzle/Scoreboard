@@ -24,54 +24,6 @@ import java.util.UUID;
 public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    /////////////////Code below///////////////////////////
-    /////////////Used by the group before/////////////////
-    //////////////////////////////////////////////////////
-    //Variable for Layout on Screen
-    private Button start, reset, player1, player2, timeSet;
-    private TextView timeLabel, goalLabel;
-
-    //Variable that will send to the Bluetooth Controller
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final Integer PLAYER1 = 1;
-    private static final Integer PLAYER2 = 2;
-    private static final byte SET_PLAYTIME = 0x10;
-    private static final byte SCORE_PLAYER1 = 0x11;
-    private static final byte SCORE_PLAYER2 = 0x12;
-    private static final byte STOP_GAME = 0x13;
-    private static final byte START_PAUSE_GAME = 0x14;
-    private static final byte PAUSE_GAME = 0x17;
-    private static final byte REQUEST_TIME = 0x16;
-
-    //Variable for Screen to check Bluetooth state
-    private Spinner deviceSpinner;
-    private devices selectedDevice;
-    private ArrayList<String> deviceList;
-    private ArrayList<devices> detailList;
-    private ArrayAdapter<String> listAdapter;
-
-    private BluetoothAdapter bAdapter;
-    private static final int REQUEST_ENABLE_BT = 9;
-    private BluetoothDevice btDevice;
-    private BluetoothSocket btSocket;
-    private char[] btMessage;
-
-//  Cant use in this version...
-//    private ConnectedThread thread;
-//    private GoogleApiClient client;
-
-
-    private class devices {
-        public String name;
-        public String adress;
-    }
-
-
-    //////////////////Code above//////////////////////////
-    /////////////Used by the group before/////////////////
-    //////////////////////////////////////////////////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

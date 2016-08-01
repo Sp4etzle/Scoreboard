@@ -40,7 +40,6 @@ public class Fragment_TeamList extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for tournament_addname_button
-                //TODO: give tournament_addname_button an Action
                 team = new O_Team(teamList.getSizeTeamList()+1,teamName.getText().toString());
                 teamList.addTeam(team);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getView().getContext(), android.R.layout.simple_list_item_1, teamList.getStringTeamList());
