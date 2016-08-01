@@ -1,5 +1,6 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -103,5 +105,28 @@ public class Activity_Main extends AppCompatActivity
 
     public static void resetApp(){
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //TODO: Bluetooth Verbindung aufheben
+    }
+    BluetoothAdapter bAdapter;
+    private BluetoothSocket socket;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bAdapter != null) {
+            if (bAdapter.isDiscovering())
+                bAdapter.cancelDiscovery();
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    //Something to log
+                }
+            }
+        }
     }
 }

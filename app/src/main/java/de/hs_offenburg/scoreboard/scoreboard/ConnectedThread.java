@@ -1,41 +1,28 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.widget.ArrayAdapter;
-
+import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by micha on 01.08.2016.
  */
 public class ConnectedThread extends Thread {
-    //Bluetooth Connection
-    private BluetoothDevice btDevice;
-    private devices selectedDevice;
-    private BluetoothSocket socket = null;
-    private BluetoothAdapter bAdapter;
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private ArrayList<String> deviceList;
-    private ArrayList<devices> detailList;
-    private ArrayAdapter<String> listAdapter;
-
+    private static final String TAG = ConnectedThread.class.getSimpleName();
     //Bluetooth Data
-    private char[] btMessage;
+    public static BluetoothSocket socket = null;
     private InputStream inStream = null;
     private OutputStream outStream = null;
     private List<Byte> buffer;
-    private Boolean runnable = true;
+    private boolean runnable = true;
     private GameInfoThread gameInfo = null;
     private final char[] hexArray = "0123456789ABCDEF".toCharArray();
-    //private final android.os.Handler lHandler = new android.os.Handler();
-    private ConnectedThread thread;
+    private final android.os.Handler lHandler = new android.os.Handler();
+    public static ConnectedThread thread;
 
     //Commands via Bluetooth
     private static final Integer PLAYER1 = 1;
@@ -46,8 +33,8 @@ public class ConnectedThread extends Thread {
     private static final byte STOP_GAME = 0x13;
     private static final byte START_PAUSE_GAME = 0x14;
     private static final byte PAUSE_GAME = 0x17;
-    private static final byte REQUEST_TIME = 0x16;
-    private static final int REQUEST_ENABLE_BT = 9;
+    public static final byte REQUEST_TIME = 0x16;
+    public static final int REQUEST_ENABLE_BT = 9;
 
     public ConnectedThread(BluetoothSocket socket) {
         if (socket != null) {
@@ -61,15 +48,6 @@ public class ConnectedThread extends Thread {
             }
             buffer = new ArrayList<Byte>();
         }
-    }
-
-    private class devices {
-        public String name;
-        public String adress;
-    }
-
-    private void configureBluetooth() {
-        bAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     public String bytesToHex(byte[] bytes) {
@@ -92,57 +70,57 @@ public class ConnectedThread extends Thread {
         }
     }
 
-    private void writeBT(byte[] bytes) {
-        if ((this.thread == null)
-                || (!thread.isAlive())) {
-            return;
-        }
-        thread.write(bytes);
-    }
-
-    private Boolean connectBT(devices device) {
-        Boolean result = false;
-        if (bAdapter == null || !bAdapter.isEnabled())
-            return result;
-        btDevice = bAdapter.getRemoteDevice(device.adress);
-
-        try {
-            socket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
-            bAdapter.cancelDiscovery();
-            socket.connect();
-            thread = new ConnectedThread(socket);
-            thread.start();
-            result = true;
-        } catch (IOException e) {
-
-        }
-        return result;
-    }
-
-    private Boolean disconnectBT() {
-        Boolean result = false;
-        try {
-            thread.close();
-            socket.close();
-            btDevice = null;
-            result = true;
-        } catch (IOException e) {
-
-        }
-        return result;
-    }
-
-
-
-    public void run()
-    {
-        while (runnable)
-        {
-            writeBT(new byte[] { REQUEST_TIME, 0x00, 0x00 });
+    public void run() {
+        Log.d(TAG, "thread run");
+        while (runnable) {
+            final byte[] buffer;
+            int bytesAvailable;
             try {
-                sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                bytesAvailable = inStream.available();
+                if (bytesAvailable > 2) {
+                    buffer = new byte[bytesAvailable];
+                    inStream.read(buffer);
+                    try {
+                        lHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int lIndex = 0; lIndex < buffer.length; lIndex += 3) {
+                                    if (buffer[lIndex] == 0x41 || buffer[lIndex] == 0x40) {
+                                        if (buffer[lIndex] == 0x41) {
+                                            int goalOne, goalTwo;
+                                            String lGoals = new String();
+                                            goalOne = buffer[lIndex+1];
+                                            goalTwo = buffer[lIndex+2];
+                                            lGoals = String.valueOf(goalOne) + ":" + String.valueOf(goalTwo);
+                                            //goalLabel.setText(lGoals);
+                                        }
+                                        if (buffer[lIndex] == 0x40) {
+                                            int time;
+                                            String lTimeLabel = new String();
+                                            time = ((buffer[lIndex+1] & 0xFF) << 8);
+                                            time |= buffer[lIndex+2] & 0xFF;
+                                            if ((time / 60) < 10) {
+                                                lTimeLabel = "0" + String.valueOf(time / 60);
+                                            } else {
+                                                lTimeLabel = String.valueOf(time / 60);
+                                            }
+                                            lTimeLabel += ":";
+                                            if ((time % 60) < 10) {
+                                                lTimeLabel += "0" + String.valueOf(time % 60);
+                                            } else {
+                                                lTimeLabel += String.valueOf(time % 60);
+                                            }
+                                            //timeLabel.setText(lTimeLabel);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (IOException e) {
+                break;
             }
         }
     }
