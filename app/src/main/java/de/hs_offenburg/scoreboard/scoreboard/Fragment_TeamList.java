@@ -32,7 +32,7 @@ public class Fragment_TeamList extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        tournamentView = inflater.inflate(R.layout.teamist_layout, container, false);
+        tournamentView = inflater.inflate(R.layout.teamlist_layout, container, false);
 
         teamName = (EditText)tournamentView.findViewById(R.id.tournament_addname_edittext);
 
