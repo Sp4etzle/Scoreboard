@@ -4,26 +4,16 @@ package de.hs_offenburg.scoreboard.scoreboard;
  * Created by micha on 31.05.2016.
  */
 public class O_Time implements I_Time{
-    //The Default Time for the Gamestart
-    int defaultSec = 0;
-    int defaultMin = 15;
-    int defaultHour = 0;
-
-    //The Current Time for the Game
+    //Time
     int sec;
     int min;
     int hour;
 
-    //The Time which is used to correct the current Time with 1 button press
-    int correctSec = 0;
-    int correctMin = 1;
-    int correctHour = 0;
-
     //create a default Time
     public O_Time(){
-        this.sec = getDefaultTimeSec();
-        this.min = getDefaultTimeMin();
-        this.hour = getDefaultTimeHour();
+        this.sec = 0;
+        this.min = 0;
+        this.hour = 0;
     }
 
     //Current Time
@@ -58,81 +48,17 @@ public class O_Time implements I_Time{
         return this.hour;
     }
 
-    //Default Time
-    //get and set default time
-    //TODO: Muss evtl. irgendwoanders abgespeichert und abgerufen werden, selbiges gilt für CorrectTime
-    @Override
-    public void setDefaultTimeSec(int DefaultTimeSec) {
-        this.defaultSec = DefaultTimeSec;
-    }
-
-    @Override
-    public int getDefaultTimeSec() {
-        return this.defaultSec;
-    }
-
-    @Override
-    public void setDefaultTimeMin(int DefaultTimeMin) {
-        this.defaultMin = DefaultTimeMin;
-    }
-
-    @Override
-    public int getDefaultTimeMin() {
-        return this.defaultMin;
-    }
-
-    @Override
-    public void setDefaultTimeHour(int DefaultTimeHour) {
-        this.defaultHour = DefaultTimeHour;
-    }
-
-    @Override
-    public int getDefaultTimeHour() {
-        return this.defaultHour;
-    }
-
-    //Correct Time
-    //get and set the correct time
-    @Override
-    public void setCorrectSec(int correctSec) {
-        this.correctSec = correctSec;
-    }
-
-    @Override
-    public int getCorrectSec() {
-        return this.correctSec;
-    }
-
-    @Override
-    public void setCorrectMin(int correctMin) {
-        this.correctMin = correctMin;
-    }
-
-    @Override
-    public int getCorrectMin() {
-        return this.correctMin;
-    }
-
-    @Override
-    public void setCorrectHour(int correctHour) {
-        this.correctHour = correctHour;
-    }
-
-    @Override
-    public int getCorrectHour() {
-        return this.correctHour;
-    }
 
     //Time Function
     //correct time (used by button)
     @Override
     public void correctIncreaseTime() {
-        increaseTime(getCorrectSec(), getCorrectMin(), getCorrectHour());
+        increaseTime(getTimeSec(), getTimeMin(), getTimeHour());
     }
 
     @Override
     public void correctDecreaseTime() {
-        decreaseTime(getCorrectSec(), getCorrectMin(), getCorrectHour());
+        decreaseTime(getTimeSec(), getTimeMin(), getTimeHour());
     }
 
     //increase or decrease only 1 sec (used by timer)
@@ -205,7 +131,16 @@ public class O_Time implements I_Time{
                 //TODO: Fill with Action for Counter = Null
             }
         }
+    }
 
+    public void isetTime(int time){
+        this.setTimeHour(time / 3600);
+        this.setTimeMin((time - this.getTimeHour() * 3600) / 60);
+        this.setTimeSec(time - this.getTimeHour() * 3600 - this.getTimeMin() * 60);
+    }
+
+    public int igetTime(O_Time time){
+        return (time.getTimeHour() * 3600 + time.getTimeMin() * 60 + time.getTimeSec());
     }
 
     //time null polling

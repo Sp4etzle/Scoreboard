@@ -5,29 +5,13 @@ package de.hs_offenburg.scoreboard.scoreboard;
  */
 public interface I_Time {
 
-    //current Time
+    //Time
     void setTimeSec(int timeSec);
     int getTimeSec();
     void setTimeMin(int timeMin);
     int getTimeMin();
     void setTimeHour(int timeHour);
     int getTimeHour();
-
-    //default Time
-    void setDefaultTimeSec(int DefaultTimeSec);
-    int getDefaultTimeSec();
-    void setDefaultTimeMin(int DefaultTimeMin);
-    int getDefaultTimeMin();
-    void setDefaultTimeHour(int DefaultTimeHour);
-    int getDefaultTimeHour();
-
-    //correct Time
-    void setCorrectSec(int correctSec);
-    int getCorrectSec();
-    void setCorrectMin(int correctMin);
-    int getCorrectMin();
-    void setCorrectHour(int correctHour);
-    int getCorrectHour();
 
     //Time function
     void correctIncreaseTime();
@@ -38,6 +22,9 @@ public interface I_Time {
 
     void increaseTime(int isec, int imin, int ihour);
     void decreaseTime(int isec, int imin, int ihour);
+
+    void isetTime(int time);
+    int igetTime(O_Time time);
 
     void setTimeNull();
     Boolean isTimeNull();
