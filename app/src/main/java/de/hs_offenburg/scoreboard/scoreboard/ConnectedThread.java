@@ -1,6 +1,7 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
 import android.bluetooth.BluetoothSocket;
+import android.text.Html;
 import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ public class ConnectedThread extends Thread {
     private final char[] hexArray = "0123456789ABCDEF".toCharArray();
     private final android.os.Handler lHandler = new android.os.Handler();
     public static ConnectedThread thread;
+    public String test;
 
     //Commands via Bluetooth
     private static final Integer PLAYER1 = 1;
@@ -43,6 +45,7 @@ public class ConnectedThread extends Thread {
                 inStream = this.socket.getInputStream();
                 outStream = this.socket.getOutputStream();
                 gameInfo = new GameInfoThread();
+                //TODO: Hier passiert irgendwas mit Daten holen
                 gameInfo.start();
             } catch (IOException e) {
             }
@@ -88,29 +91,22 @@ public class ConnectedThread extends Thread {
                                     if (buffer[lIndex] == 0x41 || buffer[lIndex] == 0x40) {
                                         if (buffer[lIndex] == 0x41) {
                                             int goalOne, goalTwo;
-                                            String lGoals = new String();
                                             goalOne = buffer[lIndex+1];
+                                            //TODO: Team 1 Tore
+                                            test = Integer.toString(goalOne);
+                                            Log.i(TAG,test);
                                             goalTwo = buffer[lIndex+2];
-                                            lGoals = String.valueOf(goalOne) + ":" + String.valueOf(goalTwo);
-                                            //goalLabel.setText(lGoals);
+                                            //TODO: Team 2 Tore
+                                            test = Integer.toString(goalTwo);
+                                            Log.i(TAG,test);
                                         }
                                         if (buffer[lIndex] == 0x40) {
                                             int time;
-                                            String lTimeLabel = new String();
                                             time = ((buffer[lIndex+1] & 0xFF) << 8);
                                             time |= buffer[lIndex+2] & 0xFF;
-                                            if ((time / 60) < 10) {
-                                                lTimeLabel = "0" + String.valueOf(time / 60);
-                                            } else {
-                                                lTimeLabel = String.valueOf(time / 60);
-                                            }
-                                            lTimeLabel += ":";
-                                            if ((time % 60) < 10) {
-                                                lTimeLabel += "0" + String.valueOf(time % 60);
-                                            } else {
-                                                lTimeLabel += String.valueOf(time % 60);
-                                            }
-                                            //timeLabel.setText(lTimeLabel);
+                                            //TODO: Zeit abgreifen
+                                            test = Integer.toString(time);
+                                            Log.i(TAG,test);
                                         }
                                     }
                                 }

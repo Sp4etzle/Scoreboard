@@ -63,6 +63,8 @@ public class Fragment_Settings extends Fragment{
         btMessage = new char[3];
         bAdapter = BluetoothAdapter.getDefaultAdapter();
 
+
+
         //TODO: Funktioniert noch nicht, funktion unbekannt
         //deviceSpinner.setAdapter(listAdapter);
 
@@ -72,21 +74,15 @@ public class Fragment_Settings extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    /* TODO: Log entfernen */
-                    Log.d(TAG, "is Checked");
-                    if (boardIsConnected == false){
+                    //Connect with device and starting get Information
+                    connectBT(selectedDevice);
+                    if (btSocket.isConnected() == false){
                         connectToBoard.setChecked(false);
-                    }else{
-                        //TODO: Thread starten etc.
-                        connectBT(selectedDevice);
                     }
                 }else{
-                    //TODO: disconnectBT funktioniert noch nicht!
-                    //disconnectBT();
-                    boardIsConnected = false;
-                    //disable Bluetooth
-                    if(bAdapter.isEnabled()==true) {
-                        bAdapter.disable();
+                    //Disable Bluetooth Connection
+                    if (btSocket.isConnected()) {
+                        disconnectBT();
                     }
                 }
             }
@@ -112,7 +108,6 @@ public class Fragment_Settings extends Fragment{
                     bAdapter.startDiscovery();
                 }
 
-                //create a BroadcastReceiver for ACTION_FOUND
                 final BroadcastReceiver mReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -151,7 +146,6 @@ public class Fragment_Settings extends Fragment{
                         }
                         if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                             //bluetooth connected to device
-                            //TODO: Abfrage um welche ID es sich handelt!!!
                             connectToBoard.setChecked(true);
                             boardIsConnected = true;
                         }
@@ -261,6 +255,7 @@ public class Fragment_Settings extends Fragment{
             ConnectedThread.thread.start();
             deviceSpinner.setEnabled(false);
             result = true;
+            boardIsConnected = true;
         } catch (IOException e) {
             Toast.makeText(getActivity().getApplicationContext(), "Keine Verbindung m\u00f6glich\n" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -275,6 +270,7 @@ public class Fragment_Settings extends Fragment{
             btDevice = null;
             deviceSpinner.setEnabled(true);
             result = true;
+            boardIsConnected = false;
         } catch (IOException e) {
             Toast.makeText(getActivity().getApplicationContext(), "Verbindung wurde nicht geschlossen", Toast.LENGTH_SHORT).show();
         }
