@@ -30,6 +30,7 @@ import java.util.UUID;
 /**
  * Created by micha on 13.05.2016.
  */
+
 public class Fragment_Settings extends Fragment{
     private static final String TAG = Fragment_Settings.class.getSimpleName();
     //setup Elements on Fragment
@@ -50,6 +51,8 @@ public class Fragment_Settings extends Fragment{
     private BluetoothSocket btSocket;
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,8 +65,6 @@ public class Fragment_Settings extends Fragment{
         listAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         btMessage = new char[3];
         bAdapter = BluetoothAdapter.getDefaultAdapter();
-
-
 
         //TODO: Funktioniert noch nicht, funktion unbekannt
         //deviceSpinner.setAdapter(listAdapter);
