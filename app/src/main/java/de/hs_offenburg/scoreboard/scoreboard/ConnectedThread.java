@@ -27,14 +27,14 @@ public class ConnectedThread extends Thread {
     public String test;
 
     //Commands via Bluetooth
-    private static final Integer PLAYER1 = 1;
-    private static final Integer PLAYER2 = 2;
-    private static final byte SET_PLAYTIME = 0x10;
-    private static final byte SCORE_PLAYER1 = 0x11;
-    private static final byte SCORE_PLAYER2 = 0x12;
-    private static final byte STOP_GAME = 0x13;
-    private static final byte START_PAUSE_GAME = 0x14;
-    private static final byte PAUSE_GAME = 0x17;
+    public static final Integer PLAYER1 = 1;
+    public static final Integer PLAYER2 = 2;
+    public static final byte SET_PLAYTIME = 0x10;
+    public static final byte SCORE_PLAYER1 = 0x11;
+    public static final byte SCORE_PLAYER2 = 0x12;
+    public static final byte STOP_GAME = 0x13;
+    public static final byte START_PAUSE_GAME = 0x14;
+    public static final byte PAUSE_GAME = 0x17;
     public static final byte REQUEST_TIME = 0x16;
     public static final int REQUEST_ENABLE_BT = 9;
 

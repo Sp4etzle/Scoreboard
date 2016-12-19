@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import static android.content.ContentValues.TAG;
+import static de.hs_offenburg.scoreboard.scoreboard.ConnectedThread.thread;
+
 /**
  * Created by micha on 13.05.2016.
  */
@@ -36,24 +41,14 @@ public class Fragment_Game extends Fragment{
             @Override
             //Handle The Correction Mode Switch
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if(isChecked){
                     correction_mode = true;
-                    game_player_1gain_button.setBackgroundColor(Color.rgb(0,63,97));
-                    game_player_1decrease_button.setBackgroundColor(Color.rgb(0,63,97));
-                    game_player_2gain_button.setBackgroundColor(Color.rgb(0,63,97));
-                    game_player_2decrease_button.setBackgroundColor(Color.rgb(0,63,97));
-                    game_time_gain_button.setBackgroundColor(Color.rgb(0,63,97));
-                    game_time_decrease_button.setBackgroundColor(Color.rgb(0,63,97));
+                    pauseGame();
                     updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode on",Toast.LENGTH_SHORT).show();
                 }else{
                     correction_mode = false;
-                    game_player_1gain_button.setBackgroundColor(Color.GRAY);
-                    game_player_1decrease_button.setBackgroundColor(Color.GRAY);
-                    game_player_2gain_button.setBackgroundColor(Color.GRAY);
-                    game_player_2decrease_button.setBackgroundColor(Color.GRAY);
-                    game_time_gain_button.setBackgroundColor(Color.GRAY);
-                    game_time_decrease_button.setBackgroundColor(Color.GRAY);
                     updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode off",Toast.LENGTH_SHORT).show();
                 }
@@ -114,6 +109,13 @@ public class Fragment_Game extends Fragment{
                     Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
                 }else{
 
+
+
+
+
+                    //neuen Punktestand senden (in dem Beispiel ist neuer Punktestand für Player 2 -> 12
+                    thread.write(new byte[] {ConnectedThread.SCORE_PLAYER2, 0x00, 12});
+
                 }
             }
         });
@@ -153,6 +155,11 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_time_current_button
                 //TODO: give game_time_current_button an Action
+
+                //TODO:!!!! Entscheiden ob Spiel pausiert werden muss oder weiter
+                pauseGame();
+
+
 
             }
         });
@@ -204,6 +211,16 @@ public class Fragment_Game extends Fragment{
     public void stopGame(){
 
     }
+    public void pauseGame(){
+        //Pausiert das Spiel
+        //TODO: entscheiden ob online oder offline mode
+        //TODO:!!!! wenn BT verbindung nicht da stürzt app ab
+        if (true) {
+            ConnectedThread.thread.write(new byte[]{ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+            Log.i(TAG, "Game wurde pausiert");
+        }
+    }
+
     public void stopTournament(){
         Toast.makeText(getActivity().getApplicationContext(),"Tournament canceled",Toast.LENGTH_SHORT).show();
         //TODO: Save Tournament Stats in List
@@ -218,7 +235,7 @@ public class Fragment_Game extends Fragment{
     }
 
     public void updateButtons(){
-
+        Log.i(TAG,"Buttons werden geupdatet");
         //Tournament Button
         if (correction_mode == false && state_tournament_running == false && state_game_running == false){
             game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
@@ -245,5 +262,22 @@ public class Fragment_Game extends Fragment{
             game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
             game_tournament_button.setText("Cancel Game");
         }
+
+        if (correction_mode == true){
+            game_player_1gain_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_player_1decrease_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_player_2gain_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_player_2decrease_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_time_gain_button.setBackgroundColor(Color.rgb(0,63,97));
+            game_time_decrease_button.setBackgroundColor(Color.rgb(0,63,97));
+        }else{
+            game_player_1gain_button.setBackgroundColor(Color.GRAY);
+            game_player_1decrease_button.setBackgroundColor(Color.GRAY);
+            game_player_2gain_button.setBackgroundColor(Color.GRAY);
+            game_player_2decrease_button.setBackgroundColor(Color.GRAY);
+            game_time_gain_button.setBackgroundColor(Color.GRAY);
+            game_time_decrease_button.setBackgroundColor(Color.GRAY);
+        }
+
     }
 }

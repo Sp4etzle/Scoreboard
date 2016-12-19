@@ -39,7 +39,7 @@ public class Fragment_Settings extends Fragment{
     Switch connectToBoard;
 
     //Init variables
-    boolean boardIsConnected = false;
+    public boolean boardIsConnected = false;
     private devices selectedDevice;
     private ArrayList<String> deviceList;
     private ArrayList<devices> detailList;
@@ -262,7 +262,7 @@ public class Fragment_Settings extends Fragment{
         return result;
     }
 
-    private Boolean disconnectBT() {
+    public Boolean disconnectBT() {
         Boolean result = false;
         try {
             ConnectedThread.thread.close();
