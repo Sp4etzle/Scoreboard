@@ -31,6 +31,7 @@ import java.util.UUID;
  * Created by micha on 13.05.2016.
  */
 
+
 public class Fragment_Settings extends Fragment{
     private static final String TAG = Fragment_Settings.class.getSimpleName();
     //setup Elements on Fragment
