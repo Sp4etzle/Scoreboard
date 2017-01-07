@@ -12,6 +12,7 @@ public interface I_Time {
     int getTimeMin();
     void setTimeHour(int timeHour);
     int getTimeHour();
+    String getTime();
 
     //Time function
     void correctIncreaseTime();

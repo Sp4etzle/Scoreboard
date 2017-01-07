@@ -17,22 +17,20 @@ public class O_Tournament implements I_Tournament{
     I_TeamList currentTeamList;
     I_TeamList allTeamList; //unused but might be important
     I_TableInfo[] tableInfo;
-    Boolean roundFinished;
     Boolean tournamentActive;
     ArrayList<ArrayList<I_Game>> round = new ArrayList();
-
+    int currentGame;
     public O_Tournament(I_Tournament_Type tournamentType,I_TeamList teamList){
         //generate table and name of tournament
         this.tournamentType = tournamentType;
         this.currentTeamList = teamList;
         this.currentTeamList.shuffleTeamList();
         this.tableInfo = new I_TableInfo[teamList.getSizeTeamList()];
-        roundFinished = true;
         tournamentActive = true;
+        generateRound();
     }
 
-    @Override
-    public String generateTournamentName(){
+    private String generateTournamentName(){
         String tournamentName;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date currentDate = new Date();
@@ -40,21 +38,19 @@ public class O_Tournament implements I_Tournament{
         return tournamentName;
     }
 
-    @Override
-    public void generateRound(){
-        roundFinished = false;
+    private void generateRound(){
         ArrayList<I_Game> gameList= new ArrayList<>();
         I_Game game;
         int team1;
         int team2;
-        switch(this.tournamentType.getTournamentType()){
-            case "ShortGame":
+        switch(this.tournamentType.getTournamentTypeI()){
+            case 0:
                 team1 = 0;
                 team2 = 1;
                 game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
                 gameList.add(game);
                 break;
-            case "AllvsAll":
+            case 1:
                 for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
                     for(team2 = team1 + 1; team2 < currentTeamList.getSizeTeamList(); team2++){
                         game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
@@ -63,7 +59,7 @@ public class O_Tournament implements I_Tournament{
                 }
                 Collections.shuffle(gameList);
                 break;
-            case "KOSystem":
+            case 2:
                 Boolean side = this.tournamentType.getBoolean();
                 //side false = left | side true = right
                 if (currentTeamList.getSizeTeamList()%2 == 0){
@@ -101,11 +97,12 @@ public class O_Tournament implements I_Tournament{
                     }
                     tournamentType.setBoolean(side);
                 }
-            case "Groupphase":
+            case 3:
                 //TODO: Logik für Gruppenphase überlegen
         }
         //add the gameList which contain all games for one round to the current round
         this.round.add(gameList);
+        this.currentGame = 0;
     }
 
     @Override
@@ -164,9 +161,37 @@ public class O_Tournament implements I_Tournament{
     }
 
     @Override
-    public Boolean startNextGame(){
-        Boolean gamesAvaible = true;
-        //TODO: Define start of next game
-        return gamesAvaible;
+    public Boolean startGame(){
+        //TODO: Start thread with time getter etc.
+        return true;
+    }
+
+    @Override
+    public I_Game getCurrentGame(){
+        return round.get(round.size()-1).get(currentGame);
+    }
+
+    @Override
+    public Boolean loadNextGame(){
+        Boolean gamesAvailable = true;
+        if (currentGame+1 <= round.get(round.size()-1).size()){
+            currentGame++;
+        }else if(getGamesAvailable() == false){
+            gamesAvailable = false;
+        }else{
+            generateRound();
+        }
+        return gamesAvailable;
+    }
+
+    @Override
+    public Boolean getGamesAvailable(){
+        Boolean gamesAvailable;
+        if(round.get(round.size()-1).size() <= 1){
+            gamesAvailable = false;
+        }else{
+            gamesAvailable = true;
+        }
+        return gamesAvailable;
     }
 }

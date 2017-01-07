@@ -11,10 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.boardIsConnected;
 import static android.content.ContentValues.TAG;
 import static de.hs_offenburg.scoreboard.scoreboard.ConnectedThread.thread;
+
+
 
 /**
  * Created by micha on 13.05.2016.
@@ -24,16 +29,23 @@ public class Fragment_Game extends Fragment{
     //Declare Buttons etc.
     Button game_tournament_button, game_time_gain_button, game_time_current_button, game_time_decrease_button;
     Button game_player_1gain_button, game_player_1decrease_button, game_player_2gain_button, game_player_2decrease_button;
+    TextView game_gamemode_current, game_name_1_current, game_name_2_current, game_player_result_current;
     public static Boolean correction_mode = false;
     public static Boolean state_game_running = false;
     public static Boolean state_tournament_running = false;
     Switch correction_mode_button;
-
+    I_Tournament tournament;
     View gameView;
-    @Nullable
+  
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         gameView = inflater.inflate(R.layout.game_layout, container, false);
+
+        //Init TextViews
+        game_gamemode_current = (TextView)gameView.findViewById(R.id.game_gamemode_current);
+        game_name_1_current = (TextView)gameView.findViewById(R.id.game_name_1_current);
+        game_name_2_current = (TextView)gameView.findViewById(R.id.game_name_2_current);
+        game_player_result_current = (TextView)gameView.findViewById(R.id.game_player_result_current);
 
         //Switch Button
         correction_mode_button=(Switch)gameView.findViewById(R.id.game_correction_switch);
@@ -157,7 +169,11 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_time_current_button an Action
 
                 //TODO:!!!! Entscheiden ob Spiel pausiert werden muss oder weiter
-                pauseGame();
+                if(state_game_running){
+                    pauseGame();
+                }else{
+                    startGame();
+                }
 
 
 
@@ -188,8 +204,11 @@ public class Fragment_Game extends Fragment{
                 Toast.makeText(getActivity().getApplicationContext(),"Press Time Button to start next Game",Toast.LENGTH_SHORT).show();
             }else if(correction_mode == false && state_tournament_running == false){
                 //Action at Tournament Start
-                state_tournament_running = true;
-                startGame();
+                if (tournament_type.isPossibleTeamNumber(teamList.getSizeTeamList())) {
+                    startTournament();
+                }else{
+                    Toast.makeText(getActivity().getApplicationContext(),"Check Tournament Settings",Toast.LENGTH_SHORT).show();
+                }
                 updateButtons();
             }
             }
@@ -201,12 +220,22 @@ public class Fragment_Game extends Fragment{
     }
 
     public void startGame(){
+        if(tournament.getGamesAvailable()){
+            //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
+            tournament.startGame();
+        }else{
+            stopTournament();
+        }
         state_game_running = true;
         Toast.makeText(getActivity().getApplicationContext(),"Game started",Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "Game wurde gestartet");
+        updateButtons();
     }
     public void cancelGame(){
         state_game_running = false;
         Toast.makeText(getActivity().getApplicationContext(),"Game canceled",Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "Game wurde abgebrochen");
+        updateButtons();
     }
     public void stopGame(){
 
@@ -215,16 +244,35 @@ public class Fragment_Game extends Fragment{
         //Pausiert das Spiel
         //TODO: entscheiden ob online oder offline mode
         //TODO:!!!! wenn BT verbindung nicht da stürzt app ab
-        if (true) {
+
+        if (boardIsConnected == true) {
             ConnectedThread.thread.write(new byte[]{ConnectedThread.PAUSE_GAME, 0x00, 0x00});
-            Log.i(TAG, "Game wurde pausiert");
         }
+        Log.i(TAG, "Game wurde pausiert");
+        updateButtons();
+    }
+
+    public void startTournament(){
+        state_tournament_running = true;
+        tournament = new O_Tournament(tournament_type, teamList);
+        game_gamemode_current.setText(tournament_type.getTournamentTypeS());
+        showGameInfo();
     }
 
     public void stopTournament(){
         Toast.makeText(getActivity().getApplicationContext(),"Tournament canceled",Toast.LENGTH_SHORT).show();
         //TODO: Save Tournament Stats in List
+        game_gamemode_current.setText("Not Started");
         resetGameActivity();
+    }
+
+    private void showGameInfo(){
+        //TODO: Bringe die nächsten Teams auf die Anzeige (allgemein setze Anzeige auf die richtigen Werte)
+        game_name_1_current.setText(tournament.getCurrentGame().team1().getTeamName());
+        game_name_2_current.setText(tournament.getCurrentGame().team2().getTeamName());
+        game_time_current_button.setText(tournament.getCurrentGame().gameTime().getTime());
+        game_player_result_current.setText(tournament.getCurrentGame().result().getResult());
+
     }
 
     public void resetGameActivity(){
@@ -232,9 +280,10 @@ public class Fragment_Game extends Fragment{
         state_game_running = false;
         state_tournament_running = false;
         updateButtons();
+
     }
 
-    public void updateButtons(){
+    private void updateButtons(){
         Log.i(TAG,"Buttons werden geupdatet");
         //Tournament Button
         if (correction_mode == false && state_tournament_running == false && state_game_running == false){

@@ -48,7 +48,21 @@ public class O_Time implements I_Time{
         return this.hour;
     }
 
-
+    @Override
+    public String getTime(){
+        String time;
+        if (this.min < 10){
+            time = "0"+this.min+":";
+        }else{
+            time = this.min+":";
+        }
+        if (this.sec < 10){
+            time = time + "0" + this.sec;
+        }else{
+            time = time + this.sec;
+        }
+        return time;
+    }
     //Time Function
     //correct time (used by button)
     @Override

@@ -68,4 +68,20 @@ public class O_Result implements I_Result{
         this.pointTeam1 = this.pointTeam2;
         this.pointTeam2 = buffer;
     }
+
+    @Override
+    public String getResult(){
+        String result;
+        if (this.pointTeam1 < 10){
+            result = "0" + pointTeam1 +":";
+        }else{
+            result = pointTeam1 + ":";
+        }
+        if (this.pointTeam2 < 10){
+            result = result + "0" + pointTeam2;
+        }else{
+            result = result + pointTeam2;
+        }
+        return result;
+    }
 }

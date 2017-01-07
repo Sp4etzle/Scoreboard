@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.state_game_running;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.state_tournament_running;
 /**
  * Created by micha on 13.05.2016.
  */
@@ -35,25 +37,25 @@ import java.util.UUID;
 public class Fragment_Settings extends Fragment{
     private static final String TAG = Fragment_Settings.class.getSimpleName();
     //setup Elements on Fragment
-    View settingsView;
+
     public Spinner deviceSpinner;
     private Button searchDevices;
     Switch connectToBoard;
 
     //Init variables
-    public boolean boardIsConnected = false;
-    private devices selectedDevice;
-    private ArrayList<String> deviceList;
-    private ArrayList<devices> detailList;
-    private ArrayAdapter<String> listAdapter;
-    private char[] btMessage;
-    public BluetoothAdapter bAdapter;
-    public  BluetoothDevice btDevice;
-    private BluetoothSocket btSocket;
+    public static boolean boardIsConnected = false;
+    private  devices selectedDevice;
+    private  ArrayList<String> deviceList;
+    private  ArrayList<devices> detailList;
+    private  ArrayAdapter<String> listAdapter;
+    private  char[] btMessage;
+    public  BluetoothAdapter bAdapter;
+    public   BluetoothDevice btDevice;
+    private   BluetoothSocket btSocket;
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    static boolean dontShowToasts = true;
 
-
-
+    View settingsView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class Fragment_Settings extends Fragment{
         searchDevices.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                dontShowToasts = false;
                 //activate Bluetooth
                 if (!bAdapter.isEnabled()) {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -177,11 +180,14 @@ public class Fragment_Settings extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //a device has been selected
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Gew\u00e4hltes Ger\u00e4t:\n"
-                                + detailList.get(position).name
-                                + " " + detailList.get(position).adress,
-                        Toast.LENGTH_LONG).show();
+                if (dontShowToasts != true){
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Gew\u00e4hltes Ger\u00e4t:\n"
+                                    + detailList.get(position).name
+                                    + " " + detailList.get(position).adress,
+                            Toast.LENGTH_LONG).show();
+                }
+
                 selectedDevice = new devices();
                 selectedDevice.adress = detailList.get(position).adress;
                 selectedDevice.name = detailList.get(position).name;
@@ -194,6 +200,47 @@ public class Fragment_Settings extends Fragment{
         });
 
         return settingsView;
+    }
+
+    @Override
+    public void onResume(){
+        //Update Frame
+        super.onResume();
+        //research Devices
+        dontShowToasts = true;
+        if ((bAdapter != null) && (bAdapter.isEnabled())) {
+            bAdapter.cancelDiscovery();
+            listPairedDevices(bAdapter);
+            bAdapter.startDiscovery();
+        }
+
+        //Current running Tournament?
+        if (state_tournament_running == true && boardIsConnected  == true){
+            //bluetooth connected to device
+            connectToBoard.setChecked(true);
+            deviceSpinner.setEnabled(false);
+            searchDevices.setEnabled(false);
+        }else if (state_tournament_running == false && boardIsConnected == true){
+            //bluetooth connected to device
+            connectToBoard.setChecked(true);
+            deviceSpinner.setEnabled(false);
+            searchDevices.setEnabled(false);
+        }else if (state_game_running == true && boardIsConnected == false){
+            deviceSpinner.setEnabled(false);
+            searchDevices.setEnabled(false);
+        }else if (state_game_running == false && boardIsConnected == false){
+            deviceSpinner.setEnabled(true);
+            searchDevices.setEnabled(true);
+        }
+
+
+
+    }
+
+    private void updateButtons(Context ct) {
+        //TODO: alles was an info zur aktuellen Seite gehört
+        //research Devices
+
     }
 
     //add paired devices to SpinnerList
@@ -270,7 +317,9 @@ public class Fragment_Settings extends Fragment{
             ConnectedThread.thread.close();
             btSocket.close();
             btDevice = null;
-            deviceSpinner.setEnabled(true);
+            if (state_tournament_running == false){
+                deviceSpinner.setEnabled(true);
+            }
             result = true;
             boardIsConnected = false;
         } catch (IOException e) {

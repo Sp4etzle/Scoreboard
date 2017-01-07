@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Simple Game"
+        android:text="Not Started"
         android:id="@+id/game_gamemode_current"
         android:layout_alignTop="@+id/game_gamemode_info"
         android:layout_toRightOf="@+id/game_gamemode_info"

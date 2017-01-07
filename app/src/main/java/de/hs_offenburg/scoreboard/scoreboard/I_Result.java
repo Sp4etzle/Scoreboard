@@ -8,6 +8,7 @@ public interface I_Result {
     void setPointTeam2(int pointTeam2);
     int getPointTeam1();
     int getPointTeam2();
+    String getResult();
 
     void increasePointTeam1();
     void increasePointTeam2();
