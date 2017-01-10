@@ -174,24 +174,42 @@ public class O_Tournament implements I_Tournament{
     @Override
     public Boolean loadNextGame(){
         Boolean gamesAvailable = true;
-        if (currentGame+1 <= round.get(round.size()-1).size()){
+        if (getNextGameAvailable()){
             currentGame++;
-        }else if(getGamesAvailable() == false){
-            gamesAvailable = false;
-        }else{
+        }else if(getGenerateRoundAvailable()){
             generateRound();
+        }else{
+            gamesAvailable = false;
         }
         return gamesAvailable;
     }
 
     @Override
-    public Boolean getGamesAvailable(){
-        Boolean gamesAvailable;
-        if(round.get(round.size()-1).size() <= 1){
-            gamesAvailable = false;
-        }else{
-            gamesAvailable = true;
+    public Boolean getNextGameAvailable(){
+        if(currentGame+1 < round.get(round.size()-1).size()){
+            return true;
         }
-        return gamesAvailable;
+        return false;
+    }
+
+    private Boolean getGenerateRoundAvailable(){
+        Boolean generateRoundAvailable = false;
+        if (tournamentType.equals(GameMode.KOSystem)){
+            generateRoundAvailable = true;
+        }
+        return generateRoundAvailable;
+    }
+
+    @Override
+    public Boolean getGameAvailable(){
+        if(currentGame < round.get(round.size()-1).size()){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String getTournamentTypeS(){
+        return this.tournamentType.getTournamentTypeS();
     }
 }

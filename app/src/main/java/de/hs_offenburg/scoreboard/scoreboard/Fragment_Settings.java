@@ -102,7 +102,7 @@ public class Fragment_Settings extends Fragment{
                 //activate Bluetooth
                 if (!bAdapter.isEnabled()) {
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, ConnectedThread.REQUEST_ENABLE_BT);
+                    startActivityForResult(enableBtIntent, T_ConnectedThread.REQUEST_ENABLE_BT);
                     bAdapter.startDiscovery();
                 }
 
@@ -276,7 +276,7 @@ public class Fragment_Settings extends Fragment{
     //list devices after found one
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ConnectedThread.REQUEST_ENABLE_BT) {
+        if (requestCode == T_ConnectedThread.REQUEST_ENABLE_BT) {
             if (resultCode == 0xffffffff)
                 listPairedDevices(bAdapter);
             else {
@@ -300,8 +300,8 @@ public class Fragment_Settings extends Fragment{
             btSocket = btDevice.createRfcommSocketToServiceRecord(MY_UUID);
             bAdapter.cancelDiscovery();
             btSocket.connect();
-            ConnectedThread.thread = new ConnectedThread(btSocket);
-            ConnectedThread.thread.start();
+            T_ConnectedThread.thread = new T_ConnectedThread(btSocket);
+            T_ConnectedThread.thread.start();
             deviceSpinner.setEnabled(false);
             result = true;
             boardIsConnected = true;
@@ -314,7 +314,7 @@ public class Fragment_Settings extends Fragment{
     public Boolean disconnectBT() {
         Boolean result = false;
         try {
-            ConnectedThread.thread.close();
+            T_ConnectedThread.thread.close();
             btSocket.close();
             btDevice = null;
             if (state_tournament_running == false){

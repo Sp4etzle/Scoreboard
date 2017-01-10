@@ -3,11 +3,11 @@ package de.hs_offenburg.scoreboard.scoreboard;
 /**
  * Created by micha on 01.08.2016.
  */
-public class GameInfoThread extends Thread{
+public class T_GameInfoThread extends Thread{
 
     private boolean runnable;
     // constructor
-    public GameInfoThread(){
+    public T_GameInfoThread(){
         runnable = true;
     }
 
@@ -23,7 +23,7 @@ public class GameInfoThread extends Thread{
         //TODO: Anweisungen an den Mikrocontroller
         while (runnable)
         {
-            writeBT(new byte[] { ConnectedThread.REQUEST_TIME, 0x00, 0x00 });
+            writeBT(new byte[] { T_ConnectedThread.REQUEST_TIME, 0x00, 0x00 });
             try {
                 sleep(300);
             } catch (InterruptedException e) {
@@ -32,10 +32,10 @@ public class GameInfoThread extends Thread{
         }
     }
     public void writeBT(byte[] bytes) {
-        if ((ConnectedThread.thread == null)
-                || (!ConnectedThread.thread.isAlive())) {
+        if ((T_ConnectedThread.thread == null)
+                || (!T_ConnectedThread.thread.isAlive())) {
             return;
         }
-        ConnectedThread.thread.write(bytes);
+        T_ConnectedThread.thread.write(bytes);
     }
 }

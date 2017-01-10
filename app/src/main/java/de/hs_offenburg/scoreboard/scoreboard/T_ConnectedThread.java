@@ -1,7 +1,6 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
 import android.bluetooth.BluetoothSocket;
-import android.text.Html;
 import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,18 +11,18 @@ import java.util.List;
 /**
  * Created by micha on 01.08.2016.
  */
-public class ConnectedThread extends Thread {
-    private static final String TAG = ConnectedThread.class.getSimpleName();
+public class T_ConnectedThread extends Thread {
+    private static final String TAG = T_ConnectedThread.class.getSimpleName();
     //Bluetooth Data
     public static BluetoothSocket socket = null;
     private InputStream inStream = null;
     private OutputStream outStream = null;
     private List<Byte> buffer;
     private boolean runnable = true;
-    private GameInfoThread gameInfo = null;
+    private T_GameInfoThread gameInfo = null;
     private final char[] hexArray = "0123456789ABCDEF".toCharArray();
     private final android.os.Handler lHandler = new android.os.Handler();
-    public static ConnectedThread thread;
+    public static T_ConnectedThread thread;
     public String test;
 
     //Commands via Bluetooth
@@ -38,13 +37,13 @@ public class ConnectedThread extends Thread {
     public static final byte REQUEST_TIME = 0x16;
     public static final int REQUEST_ENABLE_BT = 9;
 
-    public ConnectedThread(BluetoothSocket socket) {
+    public T_ConnectedThread(BluetoothSocket socket) {
         if (socket != null) {
             this.socket = socket;
             try {
                 inStream = this.socket.getInputStream();
                 outStream = this.socket.getOutputStream();
-                gameInfo = new GameInfoThread();
+                gameInfo = new T_GameInfoThread();
                 //TODO: Hier passiert irgendwas mit Daten holen
                 gameInfo.start();
             } catch (IOException e) {

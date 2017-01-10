@@ -50,7 +50,7 @@ public class Fragment_TeamList extends Fragment{
                 //Action for tournament_addname_button
                 team = new O_Team(teamList.getSizeTeamList()+1,teamName.getText().toString());
                 teamList.addTeam(team);
-
+                teamList.generateTeamNumber();
                 updateButton(getView().getContext());
                 teamName.setText("");
 
@@ -131,6 +131,9 @@ public class Fragment_TeamList extends Fragment{
     @Override
     public void onResume(){
         super.onResume();
+        if(state_tournament_running == false){
+            teamList.generateTeamNumber();
+        }
         updateButton(getView().getContext());
     }
 

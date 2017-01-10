@@ -9,5 +9,7 @@ public interface I_Tournament {
     Boolean startGame();
     I_Game getCurrentGame();
     Boolean loadNextGame();
-    Boolean getGamesAvailable();
+    Boolean getGameAvailable();
+    Boolean getNextGameAvailable();
+    String getTournamentTypeS();
 }

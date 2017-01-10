@@ -3,7 +3,6 @@ package de.hs_offenburg.scoreboard.scoreboard;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.boardIsConnected;
 import static android.content.ContentValues.TAG;
-import static de.hs_offenburg.scoreboard.scoreboard.ConnectedThread.thread;
+import static de.hs_offenburg.scoreboard.scoreboard.T_ConnectedThread.thread;
 
 
 
@@ -31,10 +30,12 @@ public class Fragment_Game extends Fragment{
     Button game_player_1gain_button, game_player_1decrease_button, game_player_2gain_button, game_player_2decrease_button;
     TextView game_gamemode_current, game_name_1_current, game_name_2_current, game_player_result_current;
     public static Boolean correction_mode = false;
+    public static Boolean state_game_pause = false;
     public static Boolean state_game_running = false;
     public static Boolean state_tournament_running = false;
+
     Switch correction_mode_button;
-    I_Tournament tournament;
+    public static I_Tournament tournament;
     View gameView;
   
     @Override
@@ -57,13 +58,12 @@ public class Fragment_Game extends Fragment{
                 if(isChecked){
                     correction_mode = true;
                     pauseGame();
-                    updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode on",Toast.LENGTH_SHORT).show();
                 }else{
                     correction_mode = false;
-                    updateButtons();
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode off",Toast.LENGTH_SHORT).show();
                 }
+                updateButtons();
             }
         });
 
@@ -75,11 +75,7 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1gain_button
                 //TODO: give game_player_1gain_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
-
-                }
+            
             }
         });
         //game_player_1decrease_button
@@ -89,11 +85,7 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1decrease_button
                 //TODO: give game_player_1decrease_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
 
-                }
             }
         });
         //game_player_2gain_button
@@ -103,11 +95,7 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2gain_button
                 //TODO: give game_player_2gain_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
 
-                }
             }
         });
         //game_player_2decrease_button
@@ -117,16 +105,14 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2decrease_button
                 //TODO: give game_player_2decrease_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
+                if (correction_mode){
 
 
 
 
 
                     //neuen Punktestand senden (in dem Beispiel ist neuer Punktestand für Player 2 -> 12
-                    thread.write(new byte[] {ConnectedThread.SCORE_PLAYER2, 0x00, 12});
+                    thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 12});
 
                 }
             }
@@ -139,11 +125,7 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_time_gain_button
                 //TODO: give game_time_gain_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
 
-                }
             }
         });
         //game_player_2decrease_button
@@ -153,11 +135,7 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_time_decrease_button
                 //TODO: give game_time_decrease_button an Action
-                if (correction_mode == false){
-                    Toast.makeText(getActivity().getApplicationContext(),"Please switch to Correction Mode",Toast.LENGTH_SHORT).show();
-                }else{
 
-                }
             }
         });
         //game_time_current_button
@@ -169,11 +147,14 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_time_current_button an Action
 
                 //TODO:!!!! Entscheiden ob Spiel pausiert werden muss oder weiter
-                if(state_game_running){
-                    pauseGame();
-                }else{
+                if (state_tournament_running == true && state_game_running == false){
                     startGame();
+                }else if(state_tournament_running == true && state_game_running == true && state_game_pause == false){
+                    pauseGame();
+                }else if(state_tournament_running == true && state_game_running == true && state_game_pause == true){
+                    resumeGame();
                 }
+
 
 
 
@@ -187,29 +168,22 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_tournament_button
                 //TODO: give game_tournament_button an Action
-            if (correction_mode == true && state_tournament_running == false){
-                //Action at Tournament Start
-                state_tournament_running = true;
-                startGame();
-                updateButtons();
-            }else if (correction_mode == true && state_tournament_running == true && state_game_running == true){
-                //Action if Tournament Runs and Game Runs
-                cancelGame();
-                updateButtons();
-            }else if (correction_mode == true && state_tournament_running == true && state_game_running == false){
-                //Action if Tournament Runs but Game Stopped
-                stopTournament();
-            }else if (correction_mode == false && state_tournament_running == true && state_game_running == false){
-                //Shows Info how to act if Game Stopped and Correction Mode Off
-                Toast.makeText(getActivity().getApplicationContext(),"Press Time Button to start next Game",Toast.LENGTH_SHORT).show();
-            }else if(correction_mode == false && state_tournament_running == false){
+            if (state_tournament_running == false){
                 //Action at Tournament Start
                 if (tournament_type.isPossibleTeamNumber(teamList.getSizeTeamList())) {
                     startTournament();
                 }else{
                     Toast.makeText(getActivity().getApplicationContext(),"Check Tournament Settings",Toast.LENGTH_SHORT).show();
                 }
-                updateButtons();
+            }else if (correction_mode == true && state_tournament_running == true && state_game_running == true){
+                //Action if Tournament Runs and Game Runs
+                cancelGame();
+            }else if (correction_mode == true && state_tournament_running == true && state_game_running == false){
+                //Action if Tournament Runs but Game Stopped
+                stopTournament();
+            }else if (correction_mode == false && state_tournament_running == true && state_game_running == false){
+                //Shows Info how to act if Game Stopped and Correction Mode Off
+                Toast.makeText(getActivity().getApplicationContext(),"Press Time Button to start next Game",Toast.LENGTH_SHORT).show();
             }
             }
         });
@@ -219,69 +193,97 @@ public class Fragment_Game extends Fragment{
         return gameView;
     }
 
-    public void startGame(){
-        if(tournament.getGamesAvailable()){
+    @Override
+    public void onResume(){
+        //Update Frame
+        super.onResume();
+        if (state_tournament_running){
+            showGameInfo();
+        }
+
+    }
+
+
+    private void startGame(){
+        Log.i(TAG,"startGame");
+        if(tournament.getGameAvailable()){
             //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
             tournament.startGame();
+            state_game_running = true;
+            Toast.makeText(getActivity().getApplicationContext(),"Game started",Toast.LENGTH_SHORT).show();
         }else{
             stopTournament();
         }
-        state_game_running = true;
-        Toast.makeText(getActivity().getApplicationContext(),"Game started",Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "Game wurde gestartet");
         updateButtons();
     }
-    public void cancelGame(){
+    private void cancelGame(){
+        Log.i(TAG,"cancelGame");
         state_game_running = false;
-        Toast.makeText(getActivity().getApplicationContext(),"Game canceled",Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "Game wurde abgebrochen");
+        state_game_pause = false;
+        tournament.getCurrentGame().setStatus(false);
+        if(tournament.getNextGameAvailable()){
+            tournament.loadNextGame();
+            showGameInfo();
+        }else{
+            stopTournament();
+        }
         updateButtons();
     }
-    public void stopGame(){
+    private void stopGame(){
 
     }
-    public void pauseGame(){
+    private void pauseGame(){
+        Log.i(TAG,"pauseGame");
         //Pausiert das Spiel
         //TODO: entscheiden ob online oder offline mode
         //TODO:!!!! wenn BT verbindung nicht da stürzt app ab
-
+        state_game_pause = true;
         if (boardIsConnected == true) {
-            ConnectedThread.thread.write(new byte[]{ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
         }
-        Log.i(TAG, "Game wurde pausiert");
         updateButtons();
     }
 
-    public void startTournament(){
-        state_tournament_running = true;
-        tournament = new O_Tournament(tournament_type, teamList);
-        game_gamemode_current.setText(tournament_type.getTournamentTypeS());
-        showGameInfo();
+    private void resumeGame(){
+        Log.i(TAG,"resumeGame");
+        //Lässt das Spiel weiter laufen
+        state_game_pause = false;
+
+        updateButtons();
     }
 
-    public void stopTournament(){
-        Toast.makeText(getActivity().getApplicationContext(),"Tournament canceled",Toast.LENGTH_SHORT).show();
+    private void startTournament(){
+        Log.i(TAG,"startTournament");
+        state_tournament_running = true;
+        tournament = new O_Tournament(tournament_type, teamList);
+        game_gamemode_current.setText(tournament.getTournamentTypeS());
+        showGameInfo();
+        updateButtons();
+    }
+
+    private void stopTournament(){
+        Log.i(TAG,"stopTournament");
         //TODO: Save Tournament Stats in List
         game_gamemode_current.setText("Not Started");
-        resetGameActivity();
+        state_tournament_running = false;
+        state_game_running = false;
+        state_game_pause = false;
+        game_name_1_current.setText("Team Blue");
+        game_name_2_current.setText("Team Yellow");
+        game_time_current_button.setText("00:00");
+        game_player_result_current.setText("00:00");
+        updateButtons();
     }
 
     private void showGameInfo(){
-        //TODO: Bringe die nächsten Teams auf die Anzeige (allgemein setze Anzeige auf die richtigen Werte)
+        Log.i(TAG,"ShowGameInfo");
         game_name_1_current.setText(tournament.getCurrentGame().team1().getTeamName());
         game_name_2_current.setText(tournament.getCurrentGame().team2().getTeamName());
         game_time_current_button.setText(tournament.getCurrentGame().gameTime().getTime());
         game_player_result_current.setText(tournament.getCurrentGame().result().getResult());
-
+        game_gamemode_current.setText(tournament.getTournamentTypeS());
     }
 
-    public void resetGameActivity(){
-        correction_mode = false;
-        state_game_running = false;
-        state_tournament_running = false;
-        updateButtons();
-
-    }
 
     private void updateButtons(){
         Log.i(TAG,"Buttons werden geupdatet");
@@ -289,21 +291,15 @@ public class Fragment_Game extends Fragment{
         if (correction_mode == false && state_tournament_running == false && state_game_running == false){
             game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
             game_tournament_button.setText("Start Tournament");
-        }else if(correction_mode == false && state_tournament_running == false && state_game_running == true){
-            game_tournament_button.setBackgroundColor(Color.GRAY);
-            game_tournament_button.setText("Game Runs");
         }else if(correction_mode == false && state_tournament_running == true && state_game_running == false){
             game_tournament_button.setBackgroundColor(Color.GRAY);
             game_tournament_button.setText("Start next Game");
         }else if(correction_mode == false && state_tournament_running == true && state_game_running == true){
             game_tournament_button.setBackgroundColor(Color.GRAY);
-            game_tournament_button.setText("Tournament Runs");
+            game_tournament_button.setText("Game Runs");
         }else if(correction_mode == true && state_tournament_running == false && state_game_running == false){
             game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
             game_tournament_button.setText("Start Tournament");
-        }else if(correction_mode == true && state_tournament_running == false && state_game_running == true){
-            game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
-            game_tournament_button.setText("Stop Game");
         }else if(correction_mode == true && state_tournament_running == true && state_game_running == false){
             game_tournament_button.setBackgroundColor(Color.rgb(0,63,97));
             game_tournament_button.setText("Cancel Tournament");
@@ -320,12 +316,12 @@ public class Fragment_Game extends Fragment{
             game_time_gain_button.setBackgroundColor(Color.rgb(0,63,97));
             game_time_decrease_button.setBackgroundColor(Color.rgb(0,63,97));
         }else{
-            game_player_1gain_button.setBackgroundColor(Color.GRAY);
-            game_player_1decrease_button.setBackgroundColor(Color.GRAY);
-            game_player_2gain_button.setBackgroundColor(Color.GRAY);
-            game_player_2decrease_button.setBackgroundColor(Color.GRAY);
-            game_time_gain_button.setBackgroundColor(Color.GRAY);
-            game_time_decrease_button.setBackgroundColor(Color.GRAY);
+            game_player_1gain_button.setBackgroundColor(Color.argb(0,1,1,1));
+            game_player_1decrease_button.setBackgroundColor(Color.argb(0,1,1,1));
+            game_player_2gain_button.setBackgroundColor(Color.argb(0,1,1,1));
+            game_player_2decrease_button.setBackgroundColor(Color.argb(0,1,1,1));
+            game_time_gain_button.setBackgroundColor(Color.argb(0,1,1,1));
+            game_time_decrease_button.setBackgroundColor(Color.argb(0,1,1,1));
         }
 
     }
