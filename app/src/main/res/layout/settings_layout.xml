@@ -47,6 +47,7 @@
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/numberPickerMin"
         android:layout_below="@+id/deviceSpinner"
         android:layout_toLeftOf="@+id/numberPickerSec" />
@@ -54,6 +55,7 @@
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/numberPickerSec"
         android:layout_below="@+id/deviceSpinner"
         android:layout_toLeftOf="@+id/SpaceButtom" />
@@ -65,7 +67,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/deviceSpinner"
         android:id="@+id/textView11"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:background="?android:attr/colorBackground"
@@ -77,6 +79,7 @@
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/numberPickerMinCT"
         android:layout_below="@+id/deviceSpinner"
         android:layout_toRightOf="@+id/SpaceButtom" />
@@ -84,6 +87,7 @@
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/numberPickerSecCT"
         android:layout_below="@+id/deviceSpinner"
         android:layout_toRightOf="@+id/numberPickerMinCT" />
@@ -95,7 +99,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/deviceSpinner"
         android:id="@+id/textView12"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:background="?android:attr/colorBackground"
