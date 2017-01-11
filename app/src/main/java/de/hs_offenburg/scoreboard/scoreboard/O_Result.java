@@ -33,27 +33,43 @@ public class O_Result implements I_Result{
     }
 
     @Override
-    public void increasePointTeam1() {
+    public Boolean increasePointTeam1() {
+        Boolean increasePossible = false;
+        if(this.pointTeam1 < 99) {
             this.pointTeam1++;
+            increasePossible = true;
+        }
+        return increasePossible;
     }
 
     @Override
-    public void increasePointTeam2() {
+    public Boolean increasePointTeam2() {
+        Boolean increasePossible = false;
+        if(this.pointTeam2 < 99) {
             this.pointTeam2++;
+            increasePossible = true;
+        }
+        return increasePossible;
     }
 
     @Override
-    public void decreasePointTeam1() {
+    public Boolean decreasePointTeam1() {
+        Boolean decreasePossible = false;
         if (this.pointTeam1 >= 1){
             this.pointTeam1--;
+            decreasePossible = true;
         }
+        return decreasePossible;
     }
 
     @Override
-    public void decreasePointTeam2() {
+    public Boolean decreasePointTeam2() {
+        Boolean decreasePossible = false;
         if (this.pointTeam2 >= 1){
             this.pointTeam2--;
+            decreasePossible = true;
         }
+        return decreasePossible;
     }
 
     @Override

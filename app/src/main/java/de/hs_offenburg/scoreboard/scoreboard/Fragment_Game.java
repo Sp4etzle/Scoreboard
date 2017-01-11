@@ -3,6 +3,8 @@ package de.hs_offenburg.scoreboard.scoreboard;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,16 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.ScheduledExecutorService;
+
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.correctTime;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.boardIsConnected;
 import static android.content.ContentValues.TAG;
 import static de.hs_offenburg.scoreboard.scoreboard.T_ConnectedThread.thread;
-
+import static java.lang.Thread.getDefaultUncaughtExceptionHandler;
 
 
 /**
@@ -33,11 +39,12 @@ public class Fragment_Game extends Fragment{
     public static Boolean state_game_pause = false;
     public static Boolean state_game_running = false;
     public static Boolean state_tournament_running = false;
+    public static Boolean state_game_screen_active = false;
 
     Switch correction_mode_button;
     public static I_Tournament tournament;
     View gameView;
-  
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         gameView = inflater.inflate(R.layout.game_layout, container, false);
@@ -48,6 +55,9 @@ public class Fragment_Game extends Fragment{
         game_name_2_current = (TextView)gameView.findViewById(R.id.game_name_2_current);
         game_player_result_current = (TextView)gameView.findViewById(R.id.game_player_result_current);
 
+        if (!updateGameScreen.isAlive()){
+            updateGameScreen.start();
+        }
         //Switch Button
         correction_mode_button=(Switch)gameView.findViewById(R.id.game_correction_switch);
         correction_mode_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -75,6 +85,11 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1gain_button
                 //TODO: give game_player_1gain_button an Action
+                if(state_game_running && correction_mode){
+                    if(tournament.getCurrentGame().result().increasePointTeam1() == true){
+
+                    }
+                }
             
             }
         });
@@ -85,6 +100,11 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_1decrease_button
                 //TODO: give game_player_1decrease_button an Action
+                if(state_game_running && correction_mode){
+                    if(tournament.getCurrentGame().result().decreasePointTeam1()){
+
+                    }
+                }
 
             }
         });
@@ -95,7 +115,11 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2gain_button
                 //TODO: give game_player_2gain_button an Action
+                if(state_game_running && correction_mode){
+                    if(tournament.getCurrentGame().result().increasePointTeam2()){
 
+                    }
+                }
             }
         });
         //game_player_2decrease_button
@@ -105,15 +129,14 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_player_2decrease_button
                 //TODO: give game_player_2decrease_button an Action
-                if (correction_mode){
+                if(state_game_running && correction_mode){
+                    if(tournament.getCurrentGame().result().decreasePointTeam2()){
 
-
-
-
-
-                    //neuen Punktestand senden (in dem Beispiel ist neuer Punktestand für Player 2 -> 12
-                    thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 12});
-
+                        if (boardIsConnected){
+                            //neuen Punktestand senden (in dem Beispiel ist neuer Punktestand für Player 2 -> 12
+                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 12});
+                        }
+                    }
                 }
             }
         });
@@ -125,19 +148,40 @@ public class Fragment_Game extends Fragment{
             public void onClick(View v){
                 //Action for game_time_gain_button
                 //TODO: give game_time_gain_button an Action
+                if(state_game_running && correction_mode){
+                    if(correctTime == null){
+                        correctTime = new O_Time();
+                        correctTime.setTimeMin(1);
+                    }
+                    if (tournament.getCurrentGame().gameTime().getTimeMin() + correctTime.getTimeMin() <100) {
+                        tournament.getCurrentGame().gameTime().increaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
+                    }
+                }
 
             }
         });
-        //game_player_2decrease_button
+
+        //game_time_gain_button
         game_time_decrease_button=(Button)gameView.findViewById(R.id.game_time_decrease_button);
         game_time_decrease_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 //Action for game_time_decrease_button
                 //TODO: give game_time_decrease_button an Action
-
+                if(state_game_running && correction_mode) {
+                    if (correctTime == null) {
+                        correctTime = new O_Time();
+                        correctTime.setTimeMin(1);
+                    }
+                    if (tournament.getCurrentGame().gameTime().getTimeMin() - correctTime.getTimeMin() <= 0) {
+                            tournament.getCurrentGame().gameTime().setTimeNull();
+                    } else {
+                        tournament.getCurrentGame().gameTime().decreaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
+                    }
+                }
             }
         });
+
         //game_time_current_button
         game_time_current_button=(Button)gameView.findViewById(R.id.game_time_current_button);
         game_time_current_button.setOnClickListener(new View.OnClickListener(){
@@ -189,7 +233,7 @@ public class Fragment_Game extends Fragment{
         });
 
         updateButtons();
-
+        state_game_screen_active = true;
         return gameView;
     }
 
@@ -200,9 +244,15 @@ public class Fragment_Game extends Fragment{
         if (state_tournament_running){
             showGameInfo();
         }
+        state_game_screen_active = true;
 
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        state_game_screen_active = false;
+    }
 
     private void startGame(){
         Log.i(TAG,"startGame");
@@ -284,7 +334,6 @@ public class Fragment_Game extends Fragment{
         game_gamemode_current.setText(tournament.getTournamentTypeS());
     }
 
-
     private void updateButtons(){
         Log.i(TAG,"Buttons werden geupdatet");
         //Tournament Button
@@ -325,4 +374,28 @@ public class Fragment_Game extends Fragment{
         }
 
     }
+    final Thread updateGameScreen = new Thread(){
+
+        @Override
+        public void run(){
+            while(true){
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException e) {}
+                    if (state_game_screen_active && state_game_running) {
+                        Log.i(TAG,"Thread run");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showGameInfo();
+                                if (tournament.getCurrentGame().gameTime().isTimeNull()){
+                                    cancelGame();
+                                }
+                            }
+                        });
+                    }
+
+            }
+        }
+    };
 }

@@ -3,6 +3,8 @@ package de.hs_offenburg.scoreboard.scoreboard;
 /**
  * Created by micha on 31.05.2016.
  */
+
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.defaulttime;
 public class O_Game implements I_Game{
 
     Boolean gameActive = false;
@@ -14,6 +16,13 @@ public class O_Game implements I_Game{
     public O_Game(I_Team team1, I_Team team2){
         this.team1 = team1;
         this.team2 = team2;
+        if (defaulttime == null) {
+            defaulttime = new O_Time();
+            defaulttime.setTimeMin(10);
+        }
+            gameTime().setTimeSec(defaulttime.getTimeSec());
+            gameTime().setTimeMin(defaulttime.getTimeMin());
+            gameTime().setTimeHour(defaulttime.getTimeHour());
     }
     @Override
     public Boolean getStatus() {

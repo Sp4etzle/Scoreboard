@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -54,6 +55,9 @@ public class Fragment_Settings extends Fragment{
     private   BluetoothSocket btSocket;
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     static boolean dontShowToasts = true;
+
+    public static I_Time defaulttime, correctTime;
+    public static NumberPicker numberPickerSec,numberPickerMin;
 
     View settingsView;
     @Nullable
@@ -199,6 +203,64 @@ public class Fragment_Settings extends Fragment{
             }
         });
 
+        //DefaultTime
+        if(defaulttime == null){
+            defaulttime = new O_Time();
+            defaulttime.setTimeMin(10);
+        }
+        NumberPicker numberPickerSec = (NumberPicker) settingsView.findViewById(R.id.numberPickerSec);
+        numberPickerSec.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        numberPickerSec.setMinValue(0);
+        numberPickerSec.setMaxValue(59);
+        numberPickerSec.setValue(defaulttime.getTimeSec());
+        numberPickerSec.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                defaulttime.setTimeSec(newVal);
+            }
+        });
+
+        NumberPicker numberPickerMin = (NumberPicker) settingsView.findViewById(R.id.numberPickerMin);
+        numberPickerMin.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        numberPickerMin.setMinValue(0);
+        numberPickerMin.setMaxValue(59);
+        numberPickerMin.setValue(defaulttime.getTimeMin());
+        numberPickerMin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                defaulttime.setTimeMin(newVal);
+            }
+        });
+
+        //CorrectTime
+        if(correctTime == null){
+            correctTime = new O_Time();
+            correctTime.setTimeMin(1);
+        }
+        NumberPicker numberPickerSecCT = (NumberPicker) settingsView.findViewById(R.id.numberPickerSecCT);
+        numberPickerSecCT.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        numberPickerSecCT.setMinValue(0);
+        numberPickerSecCT.setMaxValue(59);
+        numberPickerSecCT.setValue(correctTime.getTimeSec());
+        numberPickerSecCT.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                correctTime.setTimeSec(newVal);
+            }
+        });
+
+        NumberPicker numberPickerMinCT = (NumberPicker) settingsView.findViewById(R.id.numberPickerMinCT);
+        numberPickerMinCT.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        numberPickerMinCT.setMinValue(0);
+        numberPickerMinCT.setMaxValue(59);
+        numberPickerMinCT.setValue(correctTime.getTimeMin());
+        numberPickerMinCT.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                correctTime.setTimeMin(newVal);
+            }
+        });
+
         return settingsView;
     }
 
@@ -232,9 +294,6 @@ public class Fragment_Settings extends Fragment{
             deviceSpinner.setEnabled(true);
             searchDevices.setEnabled(true);
         }
-
-
-
     }
 
     private void updateButtons(Context ct) {
