@@ -1,5 +1,6 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -268,6 +270,7 @@ public class Fragment_Settings extends Fragment{
     public void onResume(){
         //Update Frame
         super.onResume();
+        hideKeyboard(getActivity());
         //research Devices
         dontShowToasts = true;
         if ((bAdapter != null) && (bAdapter.isEnabled())) {
@@ -390,5 +393,16 @@ public class Fragment_Settings extends Fragment{
     public static class devices {
         public String name;
         public String adress;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

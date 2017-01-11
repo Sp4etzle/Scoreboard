@@ -1,12 +1,15 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -53,6 +56,8 @@ public class Fragment_Game extends Fragment{
         if (!updateGameScreen.isAlive()){
             updateGameScreen.start();
         }
+
+
         //Switch Button
         correction_mode_button=(Switch)gameView.findViewById(R.id.game_correction_switch);
         correction_mode_button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -240,7 +245,7 @@ public class Fragment_Game extends Fragment{
             showGameInfo();
         }
         state_game_screen_active = true;
-
+        hideKeyboard(getActivity());
     }
 
     @Override
@@ -293,7 +298,6 @@ public class Fragment_Game extends Fragment{
         Log.i(TAG,"resumeGame");
         //Lässt das Spiel weiter laufen
         state_game_pause = false;
-
         updateButtons();
     }
 
@@ -393,4 +397,15 @@ public class Fragment_Game extends Fragment{
             }
         }
     };
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
