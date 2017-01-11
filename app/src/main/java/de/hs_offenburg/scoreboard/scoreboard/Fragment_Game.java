@@ -3,8 +3,6 @@ package de.hs_offenburg.scoreboard.scoreboard;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.correctTime;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.boardIsConnected;
 import static android.content.ContentValues.TAG;
 import static de.hs_offenburg.scoreboard.scoreboard.T_ConnectedThread.thread;
-import static java.lang.Thread.getDefaultUncaughtExceptionHandler;
 
 
 /**
