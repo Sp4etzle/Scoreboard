@@ -142,7 +142,6 @@ public class O_Time implements I_Time{
             }
             if (isTimeNull() == true){
                 setTimeNull();
-                //TODO: Fill with Action for Counter = Null
             }
         }
     }
@@ -168,8 +167,18 @@ public class O_Time implements I_Time{
     @Override
     public Boolean isTimeNull(){
         Boolean timeIsNull = false;
-        if(this.sec <= 0 && this.min <= 0 && this.hour <= 0){
+        if (this.hour < 0){
             timeIsNull = true;
+        }else if (this.hour == 0){
+            if (this.min < 0){
+                timeIsNull = true;
+            }else if(this.min == 0){
+                if (this.sec < 0){
+                    timeIsNull = true;
+                }else if(this.sec == 0){
+                    timeIsNull = true;
+                }
+            }
         }
         return timeIsNull;
     }

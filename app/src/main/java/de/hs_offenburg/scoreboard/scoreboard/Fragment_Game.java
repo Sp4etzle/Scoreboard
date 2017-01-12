@@ -2,7 +2,6 @@ package de.hs_offenburg.scoreboard.scoreboard;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -173,11 +172,7 @@ public class Fragment_Game extends Fragment{
                         correctTime = new O_Time();
                         correctTime.setTimeMin(1);
                     }
-                    if (tournament.getCurrentGame().gameTime().getTimeMin() - correctTime.getTimeMin() <= 0) {
-                            tournament.getCurrentGame().gameTime().setTimeNull();
-                    } else {
-                        tournament.getCurrentGame().gameTime().decreaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
-                    }
+                    tournament.getCurrentGame().gameTime().decreaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
                 }
             }
         });
@@ -383,15 +378,17 @@ public class Fragment_Game extends Fragment{
                 }catch (InterruptedException e) {}
                     if (state_game_screen_active && state_game_running) {
                         Log.i(TAG,"Thread run");
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showGameInfo();
-                                if (tournament.getCurrentGame().gameTime().isTimeNull()){
-                                    cancelGame();
+                        if (getActivity() != null){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showGameInfo();
+                                    if (tournament.getCurrentGame().gameTime().isTimeNull()){
+                                        cancelGame();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
 
             }

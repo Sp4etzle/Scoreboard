@@ -20,7 +20,7 @@ public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     final ArrayList<Fragment> fragmentList = new ArrayList<>();
-
+    static Boolean firstLaunch = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +44,12 @@ public class Activity_Main extends AppCompatActivity
         fragmentList.add(new Fragment_Music());
         fragmentList.add(new Fragment_Settings());
         fragmentList.add(new Fragment_Imprint());
+
+        if (firstLaunch){
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(0)).commit();
+        firstLaunch = false;
+        }
     }
 
     @Override
