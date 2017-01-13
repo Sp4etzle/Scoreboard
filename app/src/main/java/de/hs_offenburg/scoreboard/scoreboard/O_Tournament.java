@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.TreeSet;
 
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.goldenGoalActive;
+
 /**
  * Created by micha on 02.06.2016.
  */
@@ -23,7 +25,7 @@ public class O_Tournament implements I_Tournament{
     public O_Tournament(I_Tournament_Type tournamentType,I_TeamList teamList){
         //generate table and name of tournament
         this.tournamentType = tournamentType;
-        this.currentTeamList = teamList;
+        this.currentTeamList = teamList.getCopyTeamlist();
         this.currentTeamList.shuffleTeamList();
         this.tableInfo = new I_TableInfo[teamList.getSizeTeamList()];
         tournamentActive = true;
@@ -38,71 +40,104 @@ public class O_Tournament implements I_Tournament{
         return tournamentName;
     }
 
-    private void generateRound(){
+    private Boolean generateRound(){
         ArrayList<I_Game> gameList= new ArrayList<>();
         I_Game game;
         int team1;
         int team2;
-        switch(this.tournamentType.getTournamentTypeI()){
-            case 0:
-                team1 = 0;
-                team2 = 1;
-                game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
-                gameList.add(game);
-                break;
-            case 1:
-                for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
-                    for(team2 = team1 + 1; team2 < currentTeamList.getSizeTeamList(); team2++){
-                        game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
-                        gameList.add(game);
-                    }
-                }
-                Collections.shuffle(gameList);
-                break;
-            case 2:
-                Boolean side = this.tournamentType.getBoolean();
-                //side false = left | side true = right
-                if (currentTeamList.getSizeTeamList()%2 == 0){
-                    //amount of teams divisible by 2
+        Boolean roundGenerated = false;
+        if (currentTeamList != null){
+            switch(this.tournamentType.getTournamentTypeI()){
+                case 0:
+                    team1 = 0;
+                    team2 = 1;
+                    game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                    gameList.add(game);
+                    currentTeamList = null;
+                    roundGenerated = true;
+                    break;
+                case 1:
                     for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
-                        team2 = team1+1;
-                        game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
-                        gameList.add(game);
+                        for(team2 = team1 + 1; team2 < currentTeamList.getSizeTeamList(); team2++){
+                            game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                            gameList.add(game);
+                        }
+                    }
+                    Collections.shuffle(gameList);
+                    currentTeamList = null;
+                    roundGenerated = true;
+                    break;
+                case 2:
+                    if (!round.isEmpty()){
+                        int i;
+                        for (i = 0; i <= round.get(round.size()-1).size()-1;i++){
+                            currentTeamList.deleteTeam(getLostTeam(i));
+                        }
                     }
 
-                }else{
-                    //amount of teams not divisible by 2
-                    if (side == true){
-                        side = false;
-                        //generate games for all teams but the last one
-                        for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 2; team1++){
+
+
+                    Boolean side = this.tournamentType.getBoolean();
+                    //side false = left | side true = right
+                    if (currentTeamList.getSizeTeamList()%2 == 0){
+                        //amount of teams divisible by 2
+                        for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1 = team1+2){
                             team2 = team1+1;
                             game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
                             gameList.add(game);
                         }
-                        //free win for the right side (last team in list)
-                        this.tableInfo[currentTeamList.getTeam(currentTeamList.getSizeTeamList()-1).getTeamNumber()].increaseVictory();
-                        this.tableInfo[currentTeamList.getTeam(currentTeamList.getSizeTeamList()-1).getTeamNumber()].increaseTablePoints(3);
+
                     }else{
-                        side = true;
-                        //generate games for all teams but the first one
-                        for(team1 = 1; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
-                            team2 = team1+1;
-                            game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
-                            gameList.add(game);
+                        //amount of teams not divisible by 2
+                        if (side == true){
+                            side = false;
+                            //generate games for all teams but the last one
+                            for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 2; team1 = team1+2){
+                                team2 = team1+1;
+                                game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                                gameList.add(game);
+                            }
+                            //free win for the right side (last team in list)
+                            //this.tableInfo[currentTeamList.getTeam(currentTeamList.getSizeTeamList()-1).getTeamNumber()].increaseVictory();
+                            //this.tableInfo[currentTeamList.getTeam(currentTeamList.getSizeTeamList()-1).getTeamNumber()].increaseTablePoints(3);
+                        }else{
+                            side = true;
+                            //generate games for all teams but the first one
+                            for(team1 = 1; team1 < currentTeamList.getSizeTeamList() - 1; team1 = team1+2){
+                                team2 = team1+1;
+                                game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                                gameList.add(game);
+                            }
+                            //free win for the left side (first team in list)
+                            //this.tableInfo[currentTeamList.getTeam(0).getTeamNumber()].increaseVictory();
+                            //this.tableInfo[currentTeamList.getTeam(0).getTeamNumber()].increaseTablePoints(3);
                         }
-                        //free win for the left side (first team in list)
-                        this.tableInfo[currentTeamList.getTeam(0).getTeamNumber()].increaseVictory();
-                        this.tableInfo[currentTeamList.getTeam(0).getTeamNumber()].increaseTablePoints(3);
+                        tournamentType.setBoolean(side);
                     }
-                    tournamentType.setBoolean(side);
-                }
-            case 3:
-                //TODO: Logik für Gruppenphase überlegen
+                    if (currentTeamList.getSizeTeamList() <= 2){
+                        currentTeamList = null;
+                    }
+                    roundGenerated = true;
+                    break;
+                case 3:
+                    //TODO: Logik für Gruppenphase überlegen
+                    break;
+                case 4:
+                    team1 = 0;
+                    team2 = 1;
+                    game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                    gameList.add(game);
+                    currentTeamList = null;
+                    roundGenerated = true;
+                    goldenGoalActive = true;
+                    break;
+                default:
+            }
         }
         //add the gameList which contain all games for one round to the current round
         this.round.add(gameList);
         this.currentGame = 0;
+        return roundGenerated;
     }
 
     @Override
@@ -173,31 +208,27 @@ public class O_Tournament implements I_Tournament{
 
     @Override
     public Boolean loadNextGame(){
-        Boolean gamesAvailable = true;
-        if (getNextGameAvailable()){
+        Boolean nextGameLoaded = false;
+        if (nextGameAvailable()){
             currentGame++;
-        }else if(getGenerateRoundAvailable()){
-            generateRound();
-        }else{
-            gamesAvailable = false;
+            nextGameLoaded = true;
+        }else {
+            if (generateRound()){
+                nextGameLoaded = true;
+            }
         }
-        return gamesAvailable;
+        return nextGameLoaded;
     }
 
     @Override
-    public Boolean getNextGameAvailable(){
-        if(currentGame+1 < round.get(round.size()-1).size()){
-            return true;
+    public Boolean nextGameAvailable(){
+        Boolean nextGameAvailable = false;
+        if (round != null){
+            if(currentGame+1 < round.get(round.size()-1).size()){
+                nextGameAvailable = true;
+            }
         }
-        return false;
-    }
-
-    private Boolean getGenerateRoundAvailable(){
-        Boolean generateRoundAvailable = false;
-        if (tournamentType.equals(GameMode.KOSystem)){
-            generateRoundAvailable = true;
-        }
-        return generateRoundAvailable;
+        return nextGameAvailable;
     }
 
     @Override
@@ -212,4 +243,13 @@ public class O_Tournament implements I_Tournament{
     public String getTournamentTypeS(){
         return this.tournamentType.getTournamentTypeS();
     }
+
+    private I_Team getLostTeam(int i){
+        if (round.get(round.size()-1).get(i).result().getPointTeam1()>round.get(round.size()-1).get(i).result().getPointTeam2()){
+            return round.get(round.size()-1).get(i).team2();
+        }else{
+            return round.get(round.size()-1).get(i).team1();
+        }
+    }
 }
+

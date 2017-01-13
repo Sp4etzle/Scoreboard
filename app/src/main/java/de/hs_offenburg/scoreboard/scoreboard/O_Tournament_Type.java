@@ -40,6 +40,7 @@ public class O_Tournament_Type implements I_Tournament_Type{
             case 1  : NumberOfTeamsMin = 3; break;
             case 2  : NumberOfTeamsMin = 4; break;
             case 3  : NumberOfTeamsMin = 6; break;
+            case 4  : NumberOfTeamsMin = 2; break;
             default : NumberOfTeamsMin = 2; break;
         }
         return NumberOfTeamsMin;
@@ -49,11 +50,12 @@ public class O_Tournament_Type implements I_Tournament_Type{
     public int getPossibleTeamAmountMax() {
         int NumberOfTeamsMax = 2;
         switch(TournamentType.toInteger(TournamentType)) {
-            case 0    : NumberOfTeamsMax = 2; break;
-            case 1     : NumberOfTeamsMax = 15; break;
-            case 2     : NumberOfTeamsMax = 30; break;
-            case 3   : NumberOfTeamsMax = 40; break;
-            default             : NumberOfTeamsMax = 2; break;
+            case 0  : NumberOfTeamsMax = 2; break;
+            case 1  : NumberOfTeamsMax = 15; break;
+            case 2  : NumberOfTeamsMax = 30; break;
+            case 3  : NumberOfTeamsMax = 40; break;
+            case 4  : NumberOfTeamsMax = 2; break;
+            default : NumberOfTeamsMax = 2; break;
         }
         return NumberOfTeamsMax;
     }
@@ -64,6 +66,9 @@ public class O_Tournament_Type implements I_Tournament_Type{
         int teamNumber = 0;
         switch(TournamentType.toInteger(TournamentType)){
             case 0:
+                possibleTeamNumber.add(2);
+                break;
+            case 4:
                 possibleTeamNumber.add(2);
                 break;
             default:
@@ -102,6 +107,7 @@ public class O_Tournament_Type implements I_Tournament_Type{
             case 1: drawIsPossible = true; break;
             case 2: drawIsPossible = false; break;
             case 3: drawIsPossible = false; break;
+            case 4: drawIsPossible = false; break;
         }
         return drawIsPossible;
     }

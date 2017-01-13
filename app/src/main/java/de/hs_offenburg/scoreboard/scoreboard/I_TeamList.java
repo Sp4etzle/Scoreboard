@@ -15,4 +15,6 @@ public interface I_TeamList {
     void shuffleTeamList();
     Boolean possibleTeamList(I_Tournament_Type tournamentType);
     String[] getStringTeamList();
+    void deleteTeam(I_Team deleteTeam);
+    I_TeamList getCopyTeamlist();
 }

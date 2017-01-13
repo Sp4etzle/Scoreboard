@@ -89,7 +89,8 @@ public class Fragment_TeamList extends Fragment{
         gameModeList.add("Short Game");
         gameModeList.add("All vs All");
         gameModeList.add("KO System");
-        gameModeList.add("League");
+        gameModeList.add("League (not working)");
+        gameModeList.add("Golden Goal");
 
         ArrayAdapter<String> gameModeAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, gameModeList);
         gameModeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -30,14 +30,14 @@ public class Fragment_Game extends Fragment{
 
     //Declare Buttons etc.
     Button game_tournament_button, game_time_gain_button, game_time_current_button, game_time_decrease_button;
-    Button game_player_1gain_button, game_player_1decrease_button, game_player_2gain_button, game_player_2decrease_button;
+    Button game_player_1gain_button, game_player_1decrease_button, game_player_2gain_button, game_player_2decrease_button, show_pause;
     TextView game_gamemode_current, game_name_1_current, game_name_2_current, game_player_result_current;
     public static Boolean correction_mode = false;
     public static Boolean state_game_pause = false;
     public static Boolean state_game_running = false;
     public static Boolean state_tournament_running = false;
     public static Boolean state_game_screen_active = false;
-
+    public static Boolean goldenGoalActive = false;
     Switch correction_mode_button;
     public static I_Tournament tournament;
     View gameView;
@@ -51,7 +51,8 @@ public class Fragment_Game extends Fragment{
         game_name_1_current = (TextView)gameView.findViewById(R.id.game_name_1_current);
         game_name_2_current = (TextView)gameView.findViewById(R.id.game_name_2_current);
         game_player_result_current = (TextView)gameView.findViewById(R.id.game_player_result_current);
-
+        //Pause Button
+        show_pause = (Button)gameView.findViewById(R.id.game_state_pause);
         if (!updateGameScreen.isAlive()){
             updateGameScreen.start();
         }
@@ -66,7 +67,9 @@ public class Fragment_Game extends Fragment{
 
                 if(isChecked){
                     correction_mode = true;
-                    pauseGame();
+                    if(state_game_running && !state_game_pause) {
+                        pauseGame();
+                    }
                     Toast.makeText(getActivity().getApplicationContext(),"Correction mode on",Toast.LENGTH_SHORT).show();
                 }else{
                     correction_mode = false;
@@ -266,8 +269,7 @@ public class Fragment_Game extends Fragment{
         state_game_running = false;
         state_game_pause = false;
         tournament.getCurrentGame().setStatus(false);
-        if(tournament.getNextGameAvailable()){
-            tournament.loadNextGame();
+        if(tournament.loadNextGame()){
             showGameInfo();
         }else{
             stopTournament();
@@ -365,6 +367,12 @@ public class Fragment_Game extends Fragment{
             game_player_2decrease_button.setBackgroundColor(Color.argb(0,1,1,1));
             game_time_gain_button.setBackgroundColor(Color.argb(0,1,1,1));
             game_time_decrease_button.setBackgroundColor(Color.argb(0,1,1,1));
+        }
+
+        if(state_game_pause == true){
+            show_pause.setBackgroundColor(Color.GRAY);
+        }else{
+            show_pause.setBackgroundColor(Color.argb(0,1,1,1));
         }
 
     }
