@@ -8,6 +8,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.correction_mode;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.state_game_running;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.state_tournament_running;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.tournament;
+
 /**
  * Created by micha on 01.08.2016.
  */
@@ -92,10 +97,16 @@ public class T_ConnectedThread extends Thread {
                                             int goalOne, goalTwo;
                                             goalOne = buffer[lIndex+1];
                                             //TODO: Team 1 Tore
+                                            if(state_tournament_running && state_game_running && !correction_mode){
+                                                tournament.getCurrentGame().result().setPointTeam1(goalOne);
+                                            }
                                             test = Integer.toString(goalOne);
                                             Log.i(TAG,test);
                                             goalTwo = buffer[lIndex+2];
                                             //TODO: Team 2 Tore
+                                            if(state_tournament_running && state_game_running && !correction_mode){
+                                                tournament.getCurrentGame().result().setPointTeam2(goalTwo);
+                                            }
                                             test = Integer.toString(goalTwo);
                                             Log.i(TAG,test);
                                         }
@@ -104,6 +115,9 @@ public class T_ConnectedThread extends Thread {
                                             time = ((buffer[lIndex+1] & 0xFF) << 8);
                                             time |= buffer[lIndex+2] & 0xFF;
                                             //TODO: Zeit abgreifen
+                                            if(state_tournament_running && state_game_running){
+                                                tournament.getCurrentGame().gameTime().isetTime(time);
+                                            }
                                             test = Integer.toString(time);
                                             Log.i(TAG,test);
                                         }

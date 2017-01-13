@@ -15,6 +15,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.correctTime;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
@@ -89,7 +91,12 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_player_1gain_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().increasePointTeam1() == true){
-
+                        if (boardIsConnected){
+                            //neuen Punktestand senden
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam1())});
+                        }
                     }
                 }
             
@@ -104,7 +111,12 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_player_1decrease_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().decreasePointTeam1()){
-
+                        if (boardIsConnected){
+                            //neuen Punktestand senden
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam1())});
+                        }
                     }
                 }
 
@@ -119,7 +131,12 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_player_2gain_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().increasePointTeam2()){
-
+                        if (boardIsConnected){
+                            //neuen Punktestand senden
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam2())});
+                        }
                     }
                 }
             }
@@ -133,10 +150,11 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_player_2decrease_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().decreasePointTeam2()){
-
                         if (boardIsConnected){
-                            //neuen Punktestand senden (in dem Beispiel ist neuer Punktestand für Player 2 -> 12
-                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 12});
+                            //neuen Punktestand senden
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+                            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam2())});
                         }
                     }
                 }
@@ -158,6 +176,9 @@ public class Fragment_Game extends Fragment{
                     if (tournament.getCurrentGame().gameTime().getTimeMin() + correctTime.getTimeMin() <100) {
                         tournament.getCurrentGame().gameTime().increaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
                     }
+                    if(boardIsConnected){
+                        setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
+                        }
                 }
 
             }
@@ -176,6 +197,9 @@ public class Fragment_Game extends Fragment{
                         correctTime.setTimeMin(1);
                     }
                     tournament.getCurrentGame().gameTime().decreaseTime(correctTime.getTimeSec(), correctTime.getTimeMin(), correctTime.getTimeHour());
+                    if(boardIsConnected){
+                        setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
+                        }
                 }
             }
         });
@@ -189,17 +213,13 @@ public class Fragment_Game extends Fragment{
                 //TODO: give game_time_current_button an Action
 
                 //TODO:!!!! Entscheiden ob Spiel pausiert werden muss oder weiter
-                if (state_tournament_running == true && state_game_running == false){
+                if (state_tournament_running && !state_game_running){
                     startGame();
-                }else if(state_tournament_running == true && state_game_running == true && state_game_pause == false){
+                }else if(state_tournament_running && state_game_running && !state_game_pause){
                     pauseGame();
-                }else if(state_tournament_running == true && state_game_running == true && state_game_pause == true){
+                }else if(state_tournament_running && state_game_running && state_game_pause && !correction_mode){
                     resumeGame();
                 }
-
-
-
-
             }
         });
         //Tournament Button
@@ -219,7 +239,7 @@ public class Fragment_Game extends Fragment{
                 }
             }else if (correction_mode == true && state_tournament_running == true && state_game_running == true){
                 //Action if Tournament Runs and Game Runs
-                cancelGame();
+                stopGame();
             }else if (correction_mode == true && state_tournament_running == true && state_game_running == false){
                 //Action if Tournament Runs but Game Stopped
                 stopTournament();
@@ -258,17 +278,26 @@ public class Fragment_Game extends Fragment{
             //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
             tournament.startGame();
             state_game_running = true;
+            if (boardIsConnected == true) {
+                T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+            }
             Toast.makeText(getActivity().getApplicationContext(),"Game started",Toast.LENGTH_SHORT).show();
         }else{
             stopTournament();
         }
         updateButtons();
     }
-    private void cancelGame(){
-        Log.i(TAG,"cancelGame");
+    private void stopGame(){
+        Log.i(TAG,"stopGame");
         state_game_running = false;
         state_game_pause = false;
         tournament.getCurrentGame().setStatus(false);
+        if (boardIsConnected == true) {
+            setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
+            //Punktestand Reset
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
+        }
         if(tournament.loadNextGame()){
             showGameInfo();
         }else{
@@ -276,9 +305,7 @@ public class Fragment_Game extends Fragment{
         }
         updateButtons();
     }
-    private void stopGame(){
 
-    }
     private void pauseGame(){
         Log.i(TAG,"pauseGame");
         //Pausiert das Spiel
@@ -295,6 +322,9 @@ public class Fragment_Game extends Fragment{
         Log.i(TAG,"resumeGame");
         //Lässt das Spiel weiter laufen
         state_game_pause = false;
+        if (boardIsConnected == true) {
+            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+        }
         updateButtons();
     }
 
@@ -304,6 +334,12 @@ public class Fragment_Game extends Fragment{
         tournament = new O_Tournament(tournament_type, teamList);
         game_gamemode_current.setText(tournament.getTournamentTypeS());
         showGameInfo();
+        if (boardIsConnected){
+            setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
+            //Punktestand Reset
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
+        }
         updateButtons();
     }
 
@@ -382,7 +418,7 @@ public class Fragment_Game extends Fragment{
         public void run(){
             while(true){
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                 }catch (InterruptedException e) {}
                     if (state_game_screen_active && state_game_running) {
                         Log.i(TAG,"Thread run");
@@ -392,7 +428,7 @@ public class Fragment_Game extends Fragment{
                                 public void run() {
                                     showGameInfo();
                                     if (tournament.getCurrentGame().gameTime().isTimeNull()){
-                                        cancelGame();
+                                        stopGame();
                                     }
                                 }
                             });
@@ -412,5 +448,43 @@ public class Fragment_Game extends Fragment{
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private static byte toByte(int number) {
+        int tmp = number & 0xff;
+        if ((tmp & 0x80) == 0x80) {
+            int bit = 1;
+            int mask = 0;
+            for(;;) {
+                mask |= bit;
+                if ((tmp & bit) == 0) {
+                    bit <<=1;
+                    continue;
+                }
+                int left = tmp & (~mask);
+                int right = tmp & mask;
+                left = ~left;
+                left &= (~mask);
+                tmp = left | right;
+                tmp = -(tmp & 0xff);
+                break;
+            }
+        }
+        byte tmp2 = (byte)tmp;
+        return tmp2;
+    }
+
+    private void setTimeBT(int time){
+        if (boardIsConnected){
+            byte highByte = 0, lowByte = 0;
+            highByte = (byte) (((time) & 0xFF00) >> 8);
+            lowByte = (byte) ((time) & 0x00FF);
+            thread.write(new byte[]{T_ConnectedThread.STOP_GAME, 0x00, 0x00});
+            thread.write(new byte[]{T_ConnectedThread.SET_PLAYTIME, highByte, lowByte});
+            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
+            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam1())});
+            thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, toByte(tournament.getCurrentGame().result().getPointTeam2())});
+        }
     }
 }

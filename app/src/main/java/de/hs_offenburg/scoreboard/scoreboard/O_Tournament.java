@@ -49,6 +49,7 @@ public class O_Tournament implements I_Tournament{
         if (currentTeamList != null){
             switch(this.tournamentType.getTournamentTypeI()){
                 case 0:
+                    goldenGoalActive = false;
                     team1 = 0;
                     team2 = 1;
                     game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
@@ -57,6 +58,7 @@ public class O_Tournament implements I_Tournament{
                     roundGenerated = true;
                     break;
                 case 1:
+                    goldenGoalActive = false;
                     for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
                         for(team2 = team1 + 1; team2 < currentTeamList.getSizeTeamList(); team2++){
                             game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
@@ -68,6 +70,7 @@ public class O_Tournament implements I_Tournament{
                     roundGenerated = true;
                     break;
                 case 2:
+                    goldenGoalActive = true;
                     if (!round.isEmpty()){
                         int i;
                         for (i = 0; i <= round.get(round.size()-1).size()-1;i++){
@@ -123,13 +126,13 @@ public class O_Tournament implements I_Tournament{
                     //TODO: Logik für Gruppenphase überlegen
                     break;
                 case 4:
+                    goldenGoalActive = true;
                     team1 = 0;
                     team2 = 1;
                     game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
                     gameList.add(game);
                     currentTeamList = null;
                     roundGenerated = true;
-                    goldenGoalActive = true;
                     break;
                 default:
             }

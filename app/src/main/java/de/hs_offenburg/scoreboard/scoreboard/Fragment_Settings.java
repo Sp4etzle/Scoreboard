@@ -282,12 +282,10 @@ public class Fragment_Settings extends Fragment{
         //Current running Tournament?
         if (state_tournament_running == true && boardIsConnected  == true){
             //bluetooth connected to device
-            connectToBoard.setChecked(true);
             deviceSpinner.setEnabled(false);
             searchDevices.setEnabled(false);
         }else if (state_tournament_running == false && boardIsConnected == true){
             //bluetooth connected to device
-            connectToBoard.setChecked(true);
             deviceSpinner.setEnabled(false);
             searchDevices.setEnabled(false);
         }else if (state_game_running == true && boardIsConnected == false){

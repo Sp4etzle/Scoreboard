@@ -20,7 +20,6 @@ public class T_GameInfoThread extends Thread{
     @Override
     public void run()
     {
-        //TODO: Anweisungen an den Mikrocontroller
         while (runnable)
         {
             writeBT(new byte[] { T_ConnectedThread.REQUEST_TIME, 0x00, 0x00 });

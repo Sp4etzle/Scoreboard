@@ -25,7 +25,7 @@ public interface I_Time {
     void decreaseTime(int isec, int imin, int ihour);
 
     void isetTime(int time);
-    int igetTime(O_Time time);
+    int igetTime();
 
     void setTimeNull();
     Boolean isTimeNull();

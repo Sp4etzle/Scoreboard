@@ -152,8 +152,8 @@ public class O_Time implements I_Time{
         this.setTimeSec(time - this.getTimeHour() * 3600 - this.getTimeMin() * 60);
     }
 
-    public int igetTime(O_Time time){
-        return (time.getTimeHour() * 3600 + time.getTimeMin() * 60 + time.getTimeSec());
+    public int igetTime(){
+        return (this.hour * 3600 + this.min* 60 + this.sec);
     }
 
     //time null polling
