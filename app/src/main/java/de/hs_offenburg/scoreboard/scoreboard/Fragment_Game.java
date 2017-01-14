@@ -15,9 +15,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.correctTime;
+import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.defaulttime;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.teamList;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_TeamList.tournament_type;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Settings.boardIsConnected;
@@ -42,6 +44,7 @@ public class Fragment_Game extends Fragment{
     public static Boolean goldenGoalActive = false;
     Switch correction_mode_button;
     public static I_Tournament tournament;
+    Timer timer;
     View gameView;
 
     @Override
@@ -57,8 +60,8 @@ public class Fragment_Game extends Fragment{
         show_pause = (Button)gameView.findViewById(R.id.game_state_pause);
         if (!updateGameScreen.isAlive()){
             updateGameScreen.start();
+            startTimer();
         }
-
 
         //Switch Button
         correction_mode_button=(Switch)gameView.findViewById(R.id.game_correction_switch);
@@ -292,8 +295,9 @@ public class Fragment_Game extends Fragment{
         state_game_running = false;
         state_game_pause = false;
         tournament.getCurrentGame().setStatus(false);
+        goldenGoalActive = false;
         if (boardIsConnected == true) {
-            setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
+            setTimeBT(defaulttime.igetTime());
             //Punktestand Reset
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
@@ -412,32 +416,67 @@ public class Fragment_Game extends Fragment{
         }
 
     }
-    final Thread updateGameScreen = new Thread(){
 
+    final Thread updateGameScreen = new Thread(){
         @Override
         public void run(){
             while(true){
                 try {
                     Thread.sleep(200);
-                }catch (InterruptedException e) {}
-                    if (state_game_screen_active && state_game_running) {
-                        Log.i(TAG,"Thread run");
-                        if (getActivity() != null){
+                }catch (InterruptedException e) {
+
+                }
+                if (state_game_running) {
+
+                        if (getActivity() != null) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    showGameInfo();
-                                    if (tournament.getCurrentGame().gameTime().isTimeNull()){
+                                    if (state_game_screen_active) {
+                                        showGameInfo();
+                                    }
+                                    //Handle GameTime over
+                                    if (!goldenGoalActive && tournament.getCurrentGame().gameTime().isTimeNull() &&
+                                            !tournament.getTournamentType().isDrawPossible()) {
+                                        goldenGoalActive = true;
+                                        if (boardIsConnected) {
+                                            setTimeBT(1);
+                                        }
+                                    } else if (goldenGoalActive &&
+                                            (tournament.getCurrentGame().result().getPointTeam1() < tournament.getCurrentGame().result().getPointTeam2() ||
+                                                    tournament.getCurrentGame().result().getPointTeam1() > tournament.getCurrentGame().result().getPointTeam2())) {
+                                        stopGame();
+                                    } else if (!goldenGoalActive && tournament.getCurrentGame().gameTime().isTimeNull()) {
                                         stopGame();
                                     }
                                 }
                             });
                         }
-                    }
 
+                }
             }
         }
     };
+
+    private void startTimer(){
+        //Timer
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (state_tournament_running && state_game_running && !state_game_pause && !boardIsConnected) {
+                    if (goldenGoalActive) {
+                        tournament.getCurrentGame().gameTime().increaseTimeSec();
+                    } else {
+                        tournament.getCurrentGame().gameTime().decreaseTimeSec();
+                    }
+                } else if (state_tournament_running && state_game_running && !state_game_pause && boardIsConnected && goldenGoalActive) {
+                    //TODO: Golden Goal mit BT Verbindung
+                }
+
+            }
+        }, 1000, 1000);
+    }
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);

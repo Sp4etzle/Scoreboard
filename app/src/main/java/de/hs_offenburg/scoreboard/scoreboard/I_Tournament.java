@@ -14,4 +14,5 @@ public interface I_Tournament {
     Boolean getGameAvailable();
     Boolean nextGameAvailable();
     String getTournamentTypeS();
+    I_Tournament_Type getTournamentType();
 }

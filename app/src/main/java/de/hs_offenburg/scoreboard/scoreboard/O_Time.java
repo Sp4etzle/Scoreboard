@@ -64,17 +64,6 @@ public class O_Time implements I_Time{
         return time;
     }
     //Time Function
-    //correct time (used by button)
-    @Override
-    public void correctIncreaseTime() {
-        increaseTime(getTimeSec(), getTimeMin(), getTimeHour());
-    }
-
-    @Override
-    public void correctDecreaseTime() {
-        decreaseTime(getTimeSec(), getTimeMin(), getTimeHour());
-    }
-
     //increase or decrease only 1 sec (used by timer)
     @Override
     public void increaseTimeSec() {

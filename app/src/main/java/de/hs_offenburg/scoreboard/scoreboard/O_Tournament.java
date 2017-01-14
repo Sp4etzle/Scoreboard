@@ -17,7 +17,6 @@ public class O_Tournament implements I_Tournament{
     String tournamentName = generateTournamentName();
     I_Tournament_Type tournamentType;
     I_TeamList currentTeamList;
-    I_TeamList allTeamList; //unused but might be important
     I_TableInfo[] tableInfo;
     Boolean tournamentActive;
     ArrayList<ArrayList<I_Game>> round = new ArrayList();
@@ -49,7 +48,6 @@ public class O_Tournament implements I_Tournament{
         if (currentTeamList != null){
             switch(this.tournamentType.getTournamentTypeI()){
                 case 0:
-                    goldenGoalActive = false;
                     team1 = 0;
                     team2 = 1;
                     game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
@@ -58,7 +56,6 @@ public class O_Tournament implements I_Tournament{
                     roundGenerated = true;
                     break;
                 case 1:
-                    goldenGoalActive = false;
                     for(team1 = 0; team1 < currentTeamList.getSizeTeamList() - 1; team1++){
                         for(team2 = team1 + 1; team2 < currentTeamList.getSizeTeamList(); team2++){
                             game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
@@ -70,7 +67,6 @@ public class O_Tournament implements I_Tournament{
                     roundGenerated = true;
                     break;
                 case 2:
-                    goldenGoalActive = true;
                     if (!round.isEmpty()){
                         int i;
                         for (i = 0; i <= round.get(round.size()-1).size()-1;i++){
@@ -126,10 +122,10 @@ public class O_Tournament implements I_Tournament{
                     //TODO: Logik für Gruppenphase überlegen
                     break;
                 case 4:
-                    goldenGoalActive = true;
                     team1 = 0;
                     team2 = 1;
                     game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
+                    game.gameTime().isetTime(0);
                     gameList.add(game);
                     currentTeamList = null;
                     roundGenerated = true;
@@ -246,7 +242,8 @@ public class O_Tournament implements I_Tournament{
     public String getTournamentTypeS(){
         return this.tournamentType.getTournamentTypeS();
     }
-
+    @Override
+    public I_Tournament_Type getTournamentType(){return this.tournamentType;}
     private I_Team getLostTeam(int i){
         if (round.get(round.size()-1).get(i).result().getPointTeam1()>round.get(round.size()-1).get(i).result().getPointTeam2()){
             return round.get(round.size()-1).get(i).team2();

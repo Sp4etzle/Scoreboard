@@ -15,8 +15,6 @@ public interface I_Time {
     String getTime();
 
     //Time function
-    void correctIncreaseTime();
-    void correctDecreaseTime();
 
     void increaseTimeSec();
     void decreaseTimeSec();
