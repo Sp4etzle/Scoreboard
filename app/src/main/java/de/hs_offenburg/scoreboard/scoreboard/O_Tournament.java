@@ -27,6 +27,11 @@ public class O_Tournament implements I_Tournament{
         this.currentTeamList = teamList.getCopyTeamlist();
         this.currentTeamList.shuffleTeamList();
         this.tableInfo = new I_TableInfo[teamList.getSizeTeamList()];
+        int i;
+        for (i = 0; i < this.tableInfo.length; i++) {
+            I_TableInfo team = new O_TableInfo(teamList.getTeam(i).getTeamName());
+            this.tableInfo[i] = team;
+        }
         tournamentActive = true;
         generateRound();
     }
@@ -73,8 +78,6 @@ public class O_Tournament implements I_Tournament{
                             currentTeamList.deleteTeam(getLostTeam(i));
                         }
                     }
-
-
 
                     Boolean side = this.tournamentType.getBoolean();
                     //side false = left | side true = right
@@ -145,15 +148,15 @@ public class O_Tournament implements I_Tournament{
             //draw
             if (this.tournamentType.isDrawPossible() == true){
                 //draw is possible
-                this.tableInfo[currentGame.team1().getTeamNumber()].increasePlayedGames();
-                this.tableInfo[currentGame.team1().getTeamNumber()].increaseDraw();
-                this.tableInfo[currentGame.team1().getTeamNumber()].increaseTablePoints(1);
-                this.tableInfo[currentGame.team1().getTeamNumber()].addGoalDifference(currentGame.result());
+                this.tableInfo[currentGame.team1().getTeamNumber()-1].increasePlayedGames();
+                this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseDraw();
+                this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseTablePoints(1);
+                this.tableInfo[currentGame.team1().getTeamNumber()-1].addGoalDifference(currentGame.result());
 
-                this.tableInfo[currentGame.team2().getTeamNumber()].increasePlayedGames();
-                this.tableInfo[currentGame.team2().getTeamNumber()].increaseDraw();
-                this.tableInfo[currentGame.team2().getTeamNumber()].increaseTablePoints(1);
-                this.tableInfo[currentGame.team2().getTeamNumber()].addGoalDifference(currentGame.result());
+                this.tableInfo[currentGame.team2().getTeamNumber()-1].increasePlayedGames();
+                this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseDraw();
+                this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseTablePoints(1);
+                this.tableInfo[currentGame.team2().getTeamNumber()-1].addGoalDifference(currentGame.result());
             }else{
                 //1 Team have to win (because of KOSystem etc.)
                 //TODO: Irgend ne fehlermeldung da beim KO System einer gewinnen muss...
@@ -162,16 +165,17 @@ public class O_Tournament implements I_Tournament{
             if (currentGame.result().getPointTeam1() < currentGame.result().getPointTeam2()){
                 //if second team won, switch to the winner place (first)
                 currentGame.switchTeams();
+                currentGame.result().switchResult();
             }
-            this.tableInfo[currentGame.team1().getTeamNumber()].increasePlayedGames();
-            this.tableInfo[currentGame.team1().getTeamNumber()].increaseVictory();
-            this.tableInfo[currentGame.team1().getTeamNumber()].increaseTablePoints(3);
-            this.tableInfo[currentGame.team1().getTeamNumber()].addGoalDifference(currentGame.result());
-
-            this.tableInfo[currentGame.team2().getTeamNumber()].increasePlayedGames();
-            this.tableInfo[currentGame.team2().getTeamNumber()].increaseLost();
-            this.tableInfo[currentGame.team2().getTeamNumber()].increaseTablePoints(0);
-            this.tableInfo[currentGame.team2().getTeamNumber()].addGoalDifference(currentGame.result());
+            this.tableInfo[currentGame.team1().getTeamNumber()-1].increasePlayedGames();
+            this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseVictory();
+            this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseTablePoints(3);
+            this.tableInfo[currentGame.team1().getTeamNumber()-1].addGoalDifference(currentGame.result());
+            currentGame.result().switchResult();
+            this.tableInfo[currentGame.team2().getTeamNumber()-1].increasePlayedGames();
+            this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseLost();
+            this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseTablePoints(0);
+            this.tableInfo[currentGame.team2().getTeamNumber()-1].addGoalDifference(currentGame.result());
         }
 
         //Update the placement based on tablePoints
@@ -192,12 +196,6 @@ public class O_Tournament implements I_Tournament{
             }
             Score.pollLast();
         }
-    }
-
-    @Override
-    public Boolean startGame(){
-        //TODO: Start thread with time getter etc.
-        return true;
     }
 
     @Override
@@ -250,6 +248,16 @@ public class O_Tournament implements I_Tournament{
         }else{
             return round.get(round.size()-1).get(i).team1();
         }
+    }
+
+    @Override
+    public int getTableLength(){
+        return tableInfo.length;
+    }
+
+    @Override
+    public I_TableInfo[] getTable(){
+        return this.tableInfo;
     }
 }
 

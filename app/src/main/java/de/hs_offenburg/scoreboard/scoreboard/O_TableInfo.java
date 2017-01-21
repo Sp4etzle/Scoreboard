@@ -12,6 +12,7 @@ public class O_TableInfo implements I_TableInfo {
     I_Result goalDifference;
     int tablePoints;
     int placement;
+    String team;
 
     public O_TableInfo(){
         playedGames = 0;
@@ -21,6 +22,18 @@ public class O_TableInfo implements I_TableInfo {
         goalDifference = new O_Result();
         tablePoints = 0;
         placement = 0;
+        team = "";
+    }
+
+    public O_TableInfo(String team){
+        playedGames = 0;
+        victory = 0;
+        draw = 0;
+        lost = 0;
+        goalDifference = new O_Result();
+        tablePoints = 0;
+        placement = 0;
+        this.team = team;
     }
 
     @Override
@@ -157,5 +170,10 @@ public class O_TableInfo implements I_TableInfo {
     @Override
     public int getPlacement() {
         return this.placement;
+    }
+
+    @Override
+    public String getTeam(){
+        return this.team;
     }
 }

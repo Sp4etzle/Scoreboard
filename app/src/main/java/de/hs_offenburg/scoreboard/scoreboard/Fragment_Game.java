@@ -43,6 +43,7 @@ public class Fragment_Game extends Fragment{
     public static Boolean state_game_screen_active = false;
     public static Boolean goldenGoalActive = false;
     public static Boolean first_execute = true;
+
     Switch correction_mode_button;
     public static I_Tournament tournament;
     Timer timer;
@@ -64,6 +65,7 @@ public class Fragment_Game extends Fragment{
         }
         if(first_execute){
             startTimer();
+            first_execute = false;
         }
 
         //Switch Button
@@ -282,7 +284,6 @@ public class Fragment_Game extends Fragment{
         Log.i(TAG,"startGame");
         if(tournament.getGameAvailable()){
             //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
-            tournament.startGame();
             state_game_running = true;
             if (boardIsConnected) {
                 T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
@@ -295,6 +296,7 @@ public class Fragment_Game extends Fragment{
     }
     private void stopGame(){
         Log.i(TAG,"stopGame");
+        //Reset Settings
         state_game_running = false;
         state_game_pause = false;
         tournament.getCurrentGame().setStatus(false);
@@ -305,6 +307,11 @@ public class Fragment_Game extends Fragment{
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
         }
+
+        //Tableinfo
+        tournament.updateTablePoints(tournament.getCurrentGame());
+
+        //Display new Information
         if(tournament.loadNextGame()){
             showGameInfo();
         }else{
@@ -438,6 +445,7 @@ public class Fragment_Game extends Fragment{
                                     if (state_game_screen_active) {
                                         showGameInfo();
                                     }
+
                                     //Handle GameTime over
                                     if (!goldenGoalActive && tournament.getCurrentGame().gameTime().isTimeNull() &&
                                             !tournament.getTournamentType().isDrawPossible()) {
@@ -467,14 +475,19 @@ public class Fragment_Game extends Fragment{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (state_tournament_running && state_game_running && !state_game_pause && !boardIsConnected) {
-                    if (goldenGoalActive) {
-                        tournament.getCurrentGame().gameTime().increaseTimeSec();
-                    } else {
-                        tournament.getCurrentGame().gameTime().decreaseTimeSec();
+                if (boardIsConnected){
+                    if (state_tournament_running && state_game_running) {
+                        //TODO: Golden Goal mit BT Verbindung
+
                     }
-                } else if (state_tournament_running && state_game_running && !state_game_pause && boardIsConnected && goldenGoalActive) {
-                    //TODO: Golden Goal mit BT Verbindung
+                }else {
+                    if (state_tournament_running && state_game_running && !state_game_pause) {
+                        if (goldenGoalActive) {
+                            tournament.getCurrentGame().gameTime().increaseTimeSec();
+                        } else {
+                            tournament.getCurrentGame().gameTime().decreaseTimeSec();
+                        }
+                    }
                 }
 
             }

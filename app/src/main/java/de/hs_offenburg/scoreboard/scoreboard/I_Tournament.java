@@ -8,11 +8,12 @@ import java.util.ArrayList;
 public interface I_Tournament {
 
     void updateTablePoints(I_Game currentGame);
-    Boolean startGame();
     I_Game getCurrentGame();
     Boolean loadNextGame();
     Boolean getGameAvailable();
     Boolean nextGameAvailable();
     String getTournamentTypeS();
     I_Tournament_Type getTournamentType();
+    int getTableLength();
+    I_TableInfo[] getTable();
 }
