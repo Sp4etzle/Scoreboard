@@ -44,7 +44,8 @@ public class Fragment_Table extends Fragment{
             TableRow tbrow0 = new TableRow(this.getActivity());
 
             TextView tv0 = new TextView(this.getActivity());
-            tv0.setText("                Pos.  ");
+            //TODO: Überprüfen ob die vielen Leerzeichen bei allen Displays nötig sind
+            tv0.setText("  Pos.  ");
             tv0.setTextColor(Color.BLACK);
             tv0.setTextSize(20);
             tbrow0.addView(tv0);
