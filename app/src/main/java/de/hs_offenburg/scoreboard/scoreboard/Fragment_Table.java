@@ -87,7 +87,7 @@ public class Fragment_Table extends Fragment{
             tbrow0.addView(tv6);
 
             TextView tv7 = new TextView(this.getActivity());
-            tv7.setText("  Points");
+            tv7.setText("  Points  ");
             tv7.setTextColor(Color.BLACK);
             tv7.setTextSize(20);
             tbrow0.addView(tv7);
