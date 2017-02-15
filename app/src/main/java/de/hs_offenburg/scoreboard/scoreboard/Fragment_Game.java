@@ -1,6 +1,8 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -294,6 +296,8 @@ public class Fragment_Game extends Fragment{
         }
         updateButtons();
     }
+
+    AlertDialog.Builder gameInformation;
     private void stopGame(){
         Log.i(TAG,"stopGame");
         //Reset Settings
@@ -307,6 +311,33 @@ public class Fragment_Game extends Fragment{
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
         }
+
+
+
+        //Display game information
+
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        gameInformation = new AlertDialog.Builder(getActivity());
+        // 2. Chain together various setter methods to set the dialog characteristics
+
+        if (tournament.getCurrentGame().result().getPointTeam1() == tournament.getCurrentGame().result().getPointTeam2()){
+            gameInformation.setTitle("Draw");
+            gameInformation.setMessage("Result: " + tournament.getCurrentGame().result().getResult());
+        }else if(tournament.getCurrentGame().result().getPointTeam1() > tournament.getCurrentGame().result().getPointTeam2()){
+            gameInformation.setTitle(tournament.getCurrentGame().team1().getTeamName() + " Won");
+            gameInformation.setMessage("Result: " + tournament.getCurrentGame().result().getPointTeam1() + " : "
+                    + tournament.getCurrentGame().result().getPointTeam2());
+        }else if(tournament.getCurrentGame().result().getPointTeam1() < tournament.getCurrentGame().result().getPointTeam2()){
+            gameInformation.setTitle(tournament.getCurrentGame().team2().getTeamName() + " Won");
+            gameInformation.setMessage("Result: " + tournament.getCurrentGame().result().getPointTeam2() + " : "
+                    + tournament.getCurrentGame().result().getPointTeam1());
+        }
+
+
+        // 3. Get the AlertDialog from create()
+        AlertDialog dialog = gameInformation.create();
+        dialog.show();
+
 
         //Tableinfo
         tournament.updateTablePoints(tournament.getCurrentGame());
