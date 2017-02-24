@@ -109,8 +109,9 @@ public class Fragment_Game extends Fragment{
                         }
                     }
                 }
-            
+
             }
+            
         });
         //game_player_1decrease_button
         game_player_1decrease_button=(Button)gameView.findViewById(R.id.game_player_1decrease_button);
