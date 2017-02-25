@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+// Tester seb
 public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
