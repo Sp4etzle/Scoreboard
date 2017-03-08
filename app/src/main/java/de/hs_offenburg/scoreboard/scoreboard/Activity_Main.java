@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+//tester seb
     final ArrayList<Fragment> fragmentList = new ArrayList<>();
     static Boolean firstLaunch = true;
     @Override
