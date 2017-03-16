@@ -13,9 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.first_execute;
-import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.state_tournament_running;
 import static de.hs_offenburg.scoreboard.scoreboard.Fragment_Game.tournament;
 
 /**
@@ -94,7 +91,7 @@ public class Fragment_Table extends Fragment{
             tbrow0.addView(tv7);
 
             stk.addView(tbrow0);
-        if (!first_execute) {
+        if (tournament != null) {
             for (int i = 0; i < tournament.getTableLength(); i++) {
                 TableRow tbrow = new TableRow(this.getActivity());
 

@@ -111,7 +111,7 @@ public class Fragment_Game extends Fragment{
                 }
 
             }
-            
+
         });
         //game_player_1decrease_button
         game_player_1decrease_button=(Button)gameView.findViewById(R.id.game_player_1decrease_button);
@@ -289,6 +289,7 @@ public class Fragment_Game extends Fragment{
             //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
             state_game_running = true;
             if (boardIsConnected) {
+                thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_DOWN, 0, 0});
                 T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
             }
             Toast.makeText(getActivity().getApplicationContext(),"Game started",Toast.LENGTH_SHORT).show();
@@ -308,6 +309,7 @@ public class Fragment_Game extends Fragment{
         goldenGoalActive = false;
         if (boardIsConnected) {
             setTimeBT(defaulttime.igetTime());
+            thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_DOWN, 0, 0});
             //Punktestand Reset
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER1, 0x00, 0});
             thread.write(new byte[] {T_ConnectedThread.SCORE_PLAYER2, 0x00, 0});
@@ -484,6 +486,7 @@ public class Fragment_Game extends Fragment{
                                         goldenGoalActive = true;
                                         if (boardIsConnected) {
                                             setTimeBT(1);
+                                            thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_UP, 0, 0});
                                         }
                                     } else if (goldenGoalActive &&
                                             (tournament.getCurrentGame().result().getPointTeam1() < tournament.getCurrentGame().result().getPointTeam2() ||

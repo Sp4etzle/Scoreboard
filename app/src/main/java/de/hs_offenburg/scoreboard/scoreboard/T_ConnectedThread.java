@@ -41,6 +41,8 @@ public class T_ConnectedThread extends Thread {
     public static final byte PAUSE_GAME = 0x17;
     public static final byte REQUEST_TIME = 0x16;
     public static final int REQUEST_ENABLE_BT = 9;
+    public static final byte RCM_CMD_COUNT_UP = 0x18;
+    public static final byte RCM_CMD_COUNT_DOWN = 0x19;
 
     public T_ConnectedThread(BluetoothSocket socket) {
         if (socket != null) {
