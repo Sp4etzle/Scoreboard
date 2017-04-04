@@ -18,7 +18,7 @@ public class O_Game implements I_Game{
         this.team2 = team2;
         if (defaulttime == null) {
             defaulttime = new O_Time();
-            defaulttime.setTimeMin(10);
+            defaulttime.setTimeMin(5);
         }
             gameTime().setTimeSec(defaulttime.getTimeSec());
             gameTime().setTimeMin(defaulttime.getTimeMin());

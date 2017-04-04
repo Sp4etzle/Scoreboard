@@ -485,8 +485,10 @@ public class Fragment_Game extends Fragment{
                                             !tournament.getTournamentType().isDrawPossible()) {
                                         goldenGoalActive = true;
                                         if (boardIsConnected) {
-                                            setTimeBT(1);
+                                            tournament.getCurrentGame().gameTime().setTimeSec(61);
+                                            setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
                                             thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_UP, 0, 0});
+                                            T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
                                         }
                                     } else if (goldenGoalActive &&
                                             (tournament.getCurrentGame().result().getPointTeam1() < tournament.getCurrentGame().result().getPointTeam2() ||

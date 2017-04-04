@@ -208,7 +208,7 @@ public class Fragment_Settings extends Fragment{
         //DefaultTime
         if(defaulttime == null){
             defaulttime = new O_Time();
-            defaulttime.setTimeMin(10);
+            defaulttime.setTimeMin(5);
         }
         NumberPicker numberPickerSec = (NumberPicker) settingsView.findViewById(R.id.numberPickerSec);
         numberPickerSec.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
