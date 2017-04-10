@@ -8,11 +8,12 @@ public interface I_Result {
     void setPointTeam2(int pointTeam2);
     int getPointTeam1();
     int getPointTeam2();
+    String getResult();
 
-    void increasePointTeam1();
-    void increasePointTeam2();
-    void decreasePointTeam1();
-    void decreasePointTeam2();
+    Boolean increasePointTeam1();
+    Boolean increasePointTeam2();
+    Boolean decreasePointTeam1();
+    Boolean decreasePointTeam2();
 
     void addPoints(I_Result addPoints);
     void switchResult();

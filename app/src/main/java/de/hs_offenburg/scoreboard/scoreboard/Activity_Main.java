@@ -1,5 +1,6 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
+import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
@@ -12,19 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.IOException;
-
-
+import java.util.ArrayList;
 
 public class Activity_Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    final ArrayList<Fragment> fragmentList = new ArrayList<>();
+    static Boolean firstLaunch = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -33,6 +34,21 @@ public class Activity_Main extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        fragmentList.add(new Fragment_Game());
+        fragmentList.add(new Fragment_TeamList());
+        fragmentList.add(new Fragment_Table());
+        fragmentList.add(new Fragment_History());
+        fragmentList.add(new Fragment_Music());
+        fragmentList.add(new Fragment_Settings());
+        fragmentList.add(new Fragment_Imprint());
+
+        if (firstLaunch){
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(0)).commit();
+        firstLaunch = false;
+        }
     }
 
     @Override
@@ -75,19 +91,19 @@ public class Activity_Main extends AppCompatActivity
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_game) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Game()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(0)).commit();
         } else if (id == R.id.nav_tournament) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_TeamList()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(1)).commit();
         } else if (id == R.id.nav_table) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Table()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(2)).commit();
         } else if (id == R.id.nav_history) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_History()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(3)).commit();
         }else if (id == R.id.nav_music) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Music()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(4)).commit();
         } else if (id == R.id.nav_settings) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Settings()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(5)).commit();
         }else if (id == R.id.nav_imprint) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame,new Fragment_Imprint()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragmentList.get(6)).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -102,7 +118,6 @@ public class Activity_Main extends AppCompatActivity
     @Override
     public void onStop() {
         super.onStop();
-        //TODO: Bluetooth Verbindung aufheben
 
     }
     BluetoothAdapter bAdapter;

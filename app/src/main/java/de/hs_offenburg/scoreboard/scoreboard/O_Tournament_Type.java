@@ -1,66 +1,78 @@
 package de.hs_offenburg.scoreboard.scoreboard;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import static de.hs_offenburg.scoreboard.scoreboard.GameMode.ShortGame;
 
 /**
  * Created by micha on 31.05.2016.
  */
 public class O_Tournament_Type implements I_Tournament_Type{
 
-    String TournamentType = null;
+    GameMode TournamentType = GameMode.fromInteger(0);
     Boolean side = false;
 
-    public O_Tournament_Type(String TournamentType){
-       setTournamentType(TournamentType);
+    public O_Tournament_Type(){
+
     }
 
     @Override
-    public String getTournamentType() {
-        return this.TournamentType;
+    public String getTournamentTypeS() {
+        return GameMode.fromEnumToString(this.TournamentType);
     }
 
     @Override
-    public void setTournamentType(String TournamentType) {
+    public int getTournamentTypeI() {
+        return this.TournamentType.toInteger(TournamentType);
+    }
+
+    @Override
+    public void setTournamentType(GameMode TournamentType) {
         this.TournamentType = TournamentType;
     }
 
     @Override
-    public int getPossibleTeamAmountMin(String TournamentType) {
+    public int getPossibleTeamAmountMin() {
         int NumberOfTeamsMin = 0;
-        switch(TournamentType) {
-            case "ShortGame"    : NumberOfTeamsMin = 2; break;
-            case "AllvsAll"     : NumberOfTeamsMin = 3; break;
-            case "KOSystem"     : NumberOfTeamsMin = 4; break;
-            case "Groupphase"   : NumberOfTeamsMin = 6; break;
-            default             : NumberOfTeamsMin = 2; break;
+        switch(TournamentType.toInteger(TournamentType)) {
+            case 0  : NumberOfTeamsMin = 2; break;
+            case 1  : NumberOfTeamsMin = 3; break;
+            case 2  : NumberOfTeamsMin = 4; break;
+            case 3  : NumberOfTeamsMin = 6; break;
+            case 4  : NumberOfTeamsMin = 2; break;
+            default : NumberOfTeamsMin = 2; break;
         }
         return NumberOfTeamsMin;
     }
 
     @Override
-    public int getPossibleTeamAmountMax(String TournamentType) {
+    public int getPossibleTeamAmountMax() {
         int NumberOfTeamsMax = 2;
-        switch(TournamentType) {
-            case "ShortGame"    : NumberOfTeamsMax = 2; break;
-            case "AllvsAll"     : NumberOfTeamsMax = 15; break;
-            case "KOSystem"     : NumberOfTeamsMax = 30; break;
-            case "Groupphase"   : NumberOfTeamsMax = 40; break;
-            default             : NumberOfTeamsMax = 2; break;
+        switch(TournamentType.toInteger(TournamentType)) {
+            case 0  : NumberOfTeamsMax = 2; break;
+            case 1  : NumberOfTeamsMax = 15; break;
+            case 2  : NumberOfTeamsMax = 30; break;
+            case 3  : NumberOfTeamsMax = 40; break;
+            case 4  : NumberOfTeamsMax = 2; break;
+            default : NumberOfTeamsMax = 2; break;
         }
         return NumberOfTeamsMax;
     }
 
     @Override
-    public ArrayList<Integer> isPossibleTeamNumber (String TournamentType){
+    public ArrayList<Integer> getPossibleTeamNumber (){
         ArrayList<Integer> possibleTeamNumber = null;
-        int counter;
         int teamNumber = 0;
-        switch(TournamentType){
-            case "ShortGame":
+        switch(TournamentType.toInteger(TournamentType)){
+            case 0:
+                possibleTeamNumber.add(2);
+                break;
+            case 4:
                 possibleTeamNumber.add(2);
                 break;
             default:
-                for (teamNumber = getPossibleTeamAmountMin(TournamentType); teamNumber <= getPossibleTeamAmountMax(TournamentType); teamNumber++) {
+                for (teamNumber = getPossibleTeamAmountMin(); teamNumber <= getPossibleTeamAmountMax(); teamNumber++) {
                     possibleTeamNumber.add(teamNumber);
                 }
                 break;
@@ -71,7 +83,7 @@ public class O_Tournament_Type implements I_Tournament_Type{
     @Override
     public Boolean isPossibleTeamNumber (int teamNumber){
         Boolean possibleNumber = true;
-        if(teamNumber < getPossibleTeamAmountMin(this.TournamentType) || teamNumber > getPossibleTeamAmountMax(this.TournamentType)){
+        if(teamNumber < getPossibleTeamAmountMin() || teamNumber > getPossibleTeamAmountMax()){
             possibleNumber = false;
         }
         return possibleNumber;
@@ -90,11 +102,12 @@ public class O_Tournament_Type implements I_Tournament_Type{
     @Override
     public Boolean isDrawPossible(){
         Boolean drawIsPossible = false;
-        switch (TournamentType){
-            case "ShortGame": drawIsPossible = true;
-            case "AllvsAll": drawIsPossible = true;
-            case "KOSystem": drawIsPossible = false;
-            case "Groupphase": drawIsPossible = false;
+        switch (TournamentType.toInteger(TournamentType)){
+            case 0: drawIsPossible = true; break;
+            case 1: drawIsPossible = true; break;
+            case 2: drawIsPossible = false; break;
+            case 3: drawIsPossible = false; break;
+            case 4: drawIsPossible = false; break;
         }
         return drawIsPossible;
     }

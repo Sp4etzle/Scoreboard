@@ -25,6 +25,11 @@ public class O_TeamList implements I_TeamList{
     }
 
     @Override
+    public void deleteTeam(I_Team deleteTeam) {
+        this.teamList.remove(deleteTeam);
+    }
+
+    @Override
     public I_Team getTeam(int teamNumber){
         return this.teamList.get(teamNumber);
     }
@@ -82,5 +87,15 @@ public class O_TeamList implements I_TeamList{
             teamListString[z] = teamList.get(z).getTeamNumber() + " - " + teamList.get(z).getTeamName();
         }
         return teamListString;
+    }
+
+    @Override
+    public I_TeamList getCopyTeamlist(){
+        I_TeamList newTeamList = new O_TeamList();
+        int i;
+        for (i = 0; i < this.teamList.size();i++){
+            newTeamList.addTeam(teamList.get(i));
+        }
+        return newTeamList;
     }
 }

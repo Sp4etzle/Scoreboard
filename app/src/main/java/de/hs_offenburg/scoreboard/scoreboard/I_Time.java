@@ -12,10 +12,9 @@ public interface I_Time {
     int getTimeMin();
     void setTimeHour(int timeHour);
     int getTimeHour();
+    String getTime();
 
     //Time function
-    void correctIncreaseTime();
-    void correctDecreaseTime();
 
     void increaseTimeSec();
     void decreaseTimeSec();
@@ -24,7 +23,7 @@ public interface I_Time {
     void decreaseTime(int isec, int imin, int ihour);
 
     void isetTime(int time);
-    int igetTime(O_Time time);
+    int igetTime();
 
     void setTimeNull();
     Boolean isTimeNull();

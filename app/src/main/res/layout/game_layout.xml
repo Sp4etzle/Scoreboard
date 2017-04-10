@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
     <Space
@@ -9,6 +10,17 @@
         android:id="@+id/SpaceButtom"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/game_state_pause"
+        android:layout_above="@+id/game_gamemode_info"
+        android:layout_below="@+id/game_tournament_button"
+        android:layout_toStartOf="@+id/game_time_decrease_button"
+        android:layout_toEndOf="@+id/game_time_gain_button"
+        android:background="#0000"
+        android:clickable="false" />
 
     <Button
         android:layout_width="150dp"
@@ -51,7 +63,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12:23"
+        android:text="00:00"
         android:id="@+id/game_time_current_button"
         android:background="#003f61"
         android:textColor="#ffffff"
@@ -89,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Simple Game"
+        android:text="Not Started"
         android:id="@+id/game_gamemode_current"
         android:layout_alignTop="@+id/game_gamemode_info"
         android:layout_toRightOf="@+id/game_gamemode_info"
@@ -102,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="22:13"
+        android:text="00:00"
         android:id="@+id/game_player_result_current"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -178,7 +190,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Eisbären"
+        android:text="TeamBlue"
         android:id="@+id/game_name_1_current"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -201,7 +213,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Haifische"
+        android:text="Team Yellow"
         android:id="@+id/game_name_2_current"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -209,5 +221,6 @@
         android:layout_toRightOf="@+id/SpaceButtom"
         android:layout_toEndOf="@+id/SpaceButtom"
         android:textSize="15dp" />
+
 
 </RelativeLayout>

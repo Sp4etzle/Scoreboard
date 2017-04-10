@@ -48,19 +48,22 @@ public class O_Time implements I_Time{
         return this.hour;
     }
 
-
+    @Override
+    public String getTime(){
+        String time;
+        if (this.min < 10){
+            time = "0"+this.min+":";
+        }else{
+            time = this.min+":";
+        }
+        if (this.sec < 10){
+            time = time + "0" + this.sec;
+        }else{
+            time = time + this.sec;
+        }
+        return time;
+    }
     //Time Function
-    //correct time (used by button)
-    @Override
-    public void correctIncreaseTime() {
-        increaseTime(getTimeSec(), getTimeMin(), getTimeHour());
-    }
-
-    @Override
-    public void correctDecreaseTime() {
-        decreaseTime(getTimeSec(), getTimeMin(), getTimeHour());
-    }
-
     //increase or decrease only 1 sec (used by timer)
     @Override
     public void increaseTimeSec() {
@@ -128,7 +131,6 @@ public class O_Time implements I_Time{
             }
             if (isTimeNull() == true){
                 setTimeNull();
-                //TODO: Fill with Action for Counter = Null
             }
         }
     }
@@ -139,8 +141,8 @@ public class O_Time implements I_Time{
         this.setTimeSec(time - this.getTimeHour() * 3600 - this.getTimeMin() * 60);
     }
 
-    public int igetTime(O_Time time){
-        return (time.getTimeHour() * 3600 + time.getTimeMin() * 60 + time.getTimeSec());
+    public int igetTime(){
+        return (this.hour * 3600 + this.min* 60 + this.sec);
     }
 
     //time null polling
@@ -154,8 +156,18 @@ public class O_Time implements I_Time{
     @Override
     public Boolean isTimeNull(){
         Boolean timeIsNull = false;
-        if(this.sec <= 0 && this.min <= 0 && this.hour <= 0){
+        if (this.hour < 0){
             timeIsNull = true;
+        }else if (this.hour == 0){
+            if (this.min < 0){
+                timeIsNull = true;
+            }else if(this.min == 0){
+                if (this.sec < 0){
+                    timeIsNull = true;
+                }else if(this.sec == 0){
+                    timeIsNull = true;
+                }
+            }
         }
         return timeIsNull;
     }
