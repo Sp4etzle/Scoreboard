@@ -98,7 +98,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_player_1gain_button
-                //TODO: give game_player_1gain_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().increasePointTeam1() == true){
                         if (boardIsConnected){
@@ -119,7 +118,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_player_1decrease_button
-                //TODO: give game_player_1decrease_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().decreasePointTeam1()){
                         if (boardIsConnected){
@@ -139,7 +137,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_player_2gain_button
-                //TODO: give game_player_2gain_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().increasePointTeam2()){
                         if (boardIsConnected){
@@ -158,7 +155,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_player_2decrease_button
-                //TODO: give game_player_2decrease_button an Action
                 if(state_game_running && correction_mode){
                     if(tournament.getCurrentGame().result().decreasePointTeam2()){
                         if (boardIsConnected){
@@ -178,7 +174,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_time_gain_button
-                //TODO: give game_time_gain_button an Action
                 if(state_game_running && correction_mode){
                     if(correctTime == null){
                         correctTime = new O_Time();
@@ -201,7 +196,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_time_decrease_button
-                //TODO: give game_time_decrease_button an Action
                 if(state_game_running && correction_mode) {
                     if (correctTime == null) {
                         correctTime = new O_Time();
@@ -221,9 +215,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_time_current_button
-                //TODO: give game_time_current_button an Action
-
-                //TODO:!!!! Entscheiden ob Spiel pausiert werden muss oder weiter
                 if (state_tournament_running && !state_game_running){
                     startGame();
                 }else if(state_tournament_running && state_game_running && !state_game_pause){
@@ -240,7 +231,6 @@ public class Fragment_Game extends Fragment{
             @Override
             public void onClick(View v){
                 //Action for game_tournament_button
-                //TODO: give game_tournament_button an Action
             if (!state_tournament_running){
                 //Action at Tournament Start
                 if (tournament_type.isPossibleTeamNumber(teamList.getSizeTeamList())) {
@@ -286,7 +276,6 @@ public class Fragment_Game extends Fragment{
     private void startGame(){
         Log.i(TAG,"startGame");
         if(tournament.getGameAvailable()){
-            //TODO: Starte Thread der das Fenster mit aktueller Zeit befüllt
             state_game_running = true;
             if (boardIsConnected) {
                 thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_DOWN, 0, 0});
@@ -357,8 +346,6 @@ public class Fragment_Game extends Fragment{
     private void pauseGame(){
         Log.i(TAG,"pauseGame");
         //Pausiert das Spiel
-        //TODO: entscheiden ob online oder offline mode
-        //TODO:!!!! wenn BT verbindung nicht da stürzt app ab
         state_game_pause = true;
         if (boardIsConnected) {
             T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.PAUSE_GAME, 0x00, 0x00});
@@ -393,7 +380,7 @@ public class Fragment_Game extends Fragment{
 
     private void stopTournament(){
         Log.i(TAG,"stopTournament");
-        //TODO: Save Tournament Stats in List
+        //Save Tournament Stats in List
         game_gamemode_current.setText("Not Started");
         state_tournament_running = false;
         state_game_running = false;
@@ -485,7 +472,7 @@ public class Fragment_Game extends Fragment{
                                             !tournament.getTournamentType().isDrawPossible()) {
                                         goldenGoalActive = true;
                                         if (boardIsConnected) {
-                                            tournament.getCurrentGame().gameTime().setTimeSec(61);
+                                            tournament.getCurrentGame().gameTime().setTimeSec(2);
                                             setTimeBT(tournament.getCurrentGame().gameTime().igetTime());
                                             thread.write(new byte[] {T_ConnectedThread.RCM_CMD_COUNT_UP, 0, 0});
                                             T_ConnectedThread.thread.write(new byte[]{T_ConnectedThread.START_PAUSE_GAME, 0x00, 0x00});
@@ -513,10 +500,7 @@ public class Fragment_Game extends Fragment{
             @Override
             public void run() {
                 if (boardIsConnected){
-                    if (state_tournament_running && state_game_running) {
-                        //TODO: Golden Goal mit BT Verbindung
-
-                    }
+                    if (state_tournament_running && state_game_running) {}
                 }else {
                     if (state_tournament_running && state_game_running && !state_game_pause) {
                         if (goldenGoalActive) {

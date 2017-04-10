@@ -45,4 +45,5 @@ public interface I_TableInfo {
     int getPlacement();
 
     String getTeam();
+    int getintGoalDifference();
 }

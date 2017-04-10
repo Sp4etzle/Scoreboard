@@ -118,7 +118,6 @@ public class Activity_Main extends AppCompatActivity
     @Override
     public void onStop() {
         super.onStop();
-        //TODO: Bluetooth Verbindung aufheben
 
     }
     BluetoothAdapter bAdapter;

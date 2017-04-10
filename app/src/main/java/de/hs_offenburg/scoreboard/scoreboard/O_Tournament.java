@@ -128,7 +128,7 @@ public class O_Tournament implements I_Tournament{
                     team1 = 0;
                     team2 = 1;
                     game = new O_Game(currentTeamList.getTeam(team1), currentTeamList.getTeam(team2));
-                    game.gameTime().isetTime(0);
+                    game.gameTime().isetTime(1);
                     gameList.add(game);
                     currentTeamList = null;
                     roundGenerated = true;
@@ -143,58 +143,69 @@ public class O_Tournament implements I_Tournament{
     }
 
     @Override
-    public void updateTablePoints(I_Game currentGame){
-        if (currentGame.result().getPointTeam1() == currentGame.result().getPointTeam2()){
+    public void updateTablePoints(I_Game currentGame) {
+        if (currentGame.result().getPointTeam1() == currentGame.result().getPointTeam2()) {
             //draw
-            if (this.tournamentType.isDrawPossible() == true){
+            if (this.tournamentType.isDrawPossible() == true) {
                 //draw is possible
-                this.tableInfo[currentGame.team1().getTeamNumber()-1].increasePlayedGames();
-                this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseDraw();
-                this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseTablePoints(1);
-                this.tableInfo[currentGame.team1().getTeamNumber()-1].addGoalDifference(currentGame.result());
+                this.tableInfo[currentGame.team1().getTeamNumber() - 1].increasePlayedGames();
+                this.tableInfo[currentGame.team1().getTeamNumber() - 1].increaseDraw();
+                this.tableInfo[currentGame.team1().getTeamNumber() - 1].increaseTablePoints(1);
+                this.tableInfo[currentGame.team1().getTeamNumber() - 1].addGoalDifference(currentGame.result());
 
-                this.tableInfo[currentGame.team2().getTeamNumber()-1].increasePlayedGames();
-                this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseDraw();
-                this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseTablePoints(1);
-                this.tableInfo[currentGame.team2().getTeamNumber()-1].addGoalDifference(currentGame.result());
-            }else{
+                this.tableInfo[currentGame.team2().getTeamNumber() - 1].increasePlayedGames();
+                this.tableInfo[currentGame.team2().getTeamNumber() - 1].increaseDraw();
+                this.tableInfo[currentGame.team2().getTeamNumber() - 1].increaseTablePoints(1);
+                this.tableInfo[currentGame.team2().getTeamNumber() - 1].addGoalDifference(currentGame.result());
+            } else {
                 //1 Team have to win (because of KOSystem etc.)
                 //TODO: Irgend ne fehlermeldung da beim KO System einer gewinnen muss...
             }
-        }else {
-            if (currentGame.result().getPointTeam1() < currentGame.result().getPointTeam2()){
+        } else {
+            if (currentGame.result().getPointTeam1() < currentGame.result().getPointTeam2()) {
                 //if second team won, switch to the winner place (first)
                 currentGame.switchTeams();
                 currentGame.result().switchResult();
             }
-            this.tableInfo[currentGame.team1().getTeamNumber()-1].increasePlayedGames();
-            this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseVictory();
-            this.tableInfo[currentGame.team1().getTeamNumber()-1].increaseTablePoints(3);
-            this.tableInfo[currentGame.team1().getTeamNumber()-1].addGoalDifference(currentGame.result());
+            this.tableInfo[currentGame.team1().getTeamNumber() - 1].increasePlayedGames();
+            this.tableInfo[currentGame.team1().getTeamNumber() - 1].increaseVictory();
+            this.tableInfo[currentGame.team1().getTeamNumber() - 1].increaseTablePoints(2);
+            this.tableInfo[currentGame.team1().getTeamNumber() - 1].addGoalDifference(currentGame.result());
             currentGame.result().switchResult();
-            this.tableInfo[currentGame.team2().getTeamNumber()-1].increasePlayedGames();
-            this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseLost();
-            this.tableInfo[currentGame.team2().getTeamNumber()-1].increaseTablePoints(0);
-            this.tableInfo[currentGame.team2().getTeamNumber()-1].addGoalDifference(currentGame.result());
+            this.tableInfo[currentGame.team2().getTeamNumber() - 1].increasePlayedGames();
+            this.tableInfo[currentGame.team2().getTeamNumber() - 1].increaseLost();
+            this.tableInfo[currentGame.team2().getTeamNumber() - 1].increaseTablePoints(0);
+            this.tableInfo[currentGame.team2().getTeamNumber() - 1].addGoalDifference(currentGame.result());
         }
 
-        //Update the placement based on tablePoints
-        int counter;
-        int placement = 0;
-        TreeSet<Integer> Score = new TreeSet<>();
-        //fill the different Scores in a treeSet
-        for (counter = 0; counter < tableInfo.length; counter++){
-            Score.add(tableInfo[counter].getTablePoints());
+
+        //Team Array
+        int teamArray[] = new int[tableInfo.length];
+        for (int i = 0; i < tableInfo.length; i++) {
+            teamArray[i] = i;
         }
-        //give the placement based on the tablePoints in the treeSet
-        while (Score.isEmpty() == false){
-            placement++;
-            for (counter = 0; counter < tableInfo.length; counter++){
-                if (tableInfo[counter].getTablePoints() == Score.last()){
-                    tableInfo[counter].setPlacement(placement);
+
+        //Bubblesort
+        boolean unsorted = true;
+        int temp;
+
+        while (unsorted) {
+            unsorted = false;
+            for (int i = 0; i < teamArray.length - 1; i++) {
+                if (tableInfo[teamArray[i]].getTablePoints() < tableInfo[teamArray[i + 1]].getTablePoints() || (
+                        tableInfo[teamArray[i]].getTablePoints() == tableInfo[teamArray[i + 1]].getTablePoints() &&
+                                tableInfo[teamArray[i]].getintGoalDifference() < tableInfo[teamArray[i + 1]].getintGoalDifference())) {
+                    temp = teamArray[i];
+                    teamArray[i] = teamArray[i + 1];
+                    teamArray[i + 1] = temp;
+                    unsorted = true;
                 }
             }
-            Score.pollLast();
+        }
+
+        //set Placement
+        for (int i = 0; i < teamArray.length; i++){
+            tableInfo[teamArray[i]].setPlacement(i+1);
         }
     }
 

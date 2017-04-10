@@ -176,4 +176,9 @@ public class O_TableInfo implements I_TableInfo {
     public String getTeam(){
         return this.team;
     }
+
+    @Override
+    public int getintGoalDifference(){
+        return  this.goalDifference.getPointTeam1()-this.goalDifference.getPointTeam2();
+    }
 }

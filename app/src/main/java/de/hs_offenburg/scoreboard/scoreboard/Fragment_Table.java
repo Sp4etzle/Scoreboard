@@ -93,65 +93,70 @@ public class Fragment_Table extends Fragment{
             stk.addView(tbrow0);
         if (tournament != null) {
             for (int i = 0; i < tournament.getTableLength(); i++) {
-                TableRow tbrow = new TableRow(this.getActivity());
+                for (int x = 0; x < tournament.getTableLength();x++) {
+                    if (tournament.getTable()[x].getPlacement() == i+1) {
 
-                TextView t1v = new TextView(this.getActivity());
-                t1v.setText("" + tournament.getTable()[i].getPlacement());
-                t1v.setTextColor(Color.BLACK);
-                t1v.setTextSize(18);
-                t1v.setGravity(Gravity.CENTER);
-                tbrow.addView(t1v);
+                        TableRow tbrow = new TableRow(this.getActivity());
 
-                TextView t2v = new TextView(this.getActivity());
-                t2v.setText("" + tournament.getTable()[i].getTeam());
-                t2v.setTextColor(Color.BLACK);
-                t2v.setTextSize(18);
-                t2v.setGravity(Gravity.LEFT);
-                tbrow.addView(t2v);
+                        TextView t1v = new TextView(this.getActivity());
+                        t1v.setText("" + tournament.getTable()[x].getPlacement());
+                        t1v.setTextColor(Color.BLACK);
+                        t1v.setTextSize(18);
+                        t1v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t1v);
 
-                TextView t3v = new TextView(this.getActivity());
-                t3v.setText("" + tournament.getTable()[i].getPlayedGames());
-                t3v.setTextColor(Color.BLACK);
-                t3v.setTextSize(18);
-                t3v.setGravity(Gravity.CENTER);
-                tbrow.addView(t3v);
+                        TextView t2v = new TextView(this.getActivity());
+                        t2v.setText("" + tournament.getTable()[x].getTeam());
+                        t2v.setTextColor(Color.BLACK);
+                        t2v.setTextSize(18);
+                        t2v.setGravity(Gravity.LEFT);
+                        tbrow.addView(t2v);
 
-                TextView t4v = new TextView(this.getActivity());
-                t4v.setText("" + tournament.getTable()[i].getVictory());
-                t4v.setTextColor(Color.BLACK);
-                t4v.setTextSize(18);
-                t4v.setGravity(Gravity.CENTER);
-                tbrow.addView(t4v);
+                        TextView t3v = new TextView(this.getActivity());
+                        t3v.setText("" + tournament.getTable()[x].getPlayedGames());
+                        t3v.setTextColor(Color.BLACK);
+                        t3v.setTextSize(18);
+                        t3v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t3v);
 
-                TextView t5v = new TextView(this.getActivity());
-                t5v.setText("" + tournament.getTable()[i].getDraw());
-                t5v.setTextColor(Color.BLACK);
-                t5v.setTextSize(18);
-                t5v.setGravity(Gravity.CENTER);
-                tbrow.addView(t5v);
+                        TextView t4v = new TextView(this.getActivity());
+                        t4v.setText("" + tournament.getTable()[x].getVictory());
+                        t4v.setTextColor(Color.BLACK);
+                        t4v.setTextSize(18);
+                        t4v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t4v);
 
-                TextView t6v = new TextView(this.getActivity());
-                t6v.setText("" + tournament.getTable()[i].getLost());
-                t6v.setTextColor(Color.BLACK);
-                t6v.setTextSize(18);
-                t6v.setGravity(Gravity.CENTER);
-                tbrow.addView(t6v);
+                        TextView t5v = new TextView(this.getActivity());
+                        t5v.setText("" + tournament.getTable()[x].getDraw());
+                        t5v.setTextColor(Color.BLACK);
+                        t5v.setTextSize(18);
+                        t5v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t5v);
 
-                TextView t7v = new TextView(this.getActivity());
-                t7v.setText("" + tournament.getTable()[i].getGoalDifference().getPointTeam1() + ":" + tournament.getTable()[i].getGoalDifference().getPointTeam2());
-                t7v.setTextColor(Color.BLACK);
-                t7v.setTextSize(18);
-                t7v.setGravity(Gravity.CENTER);
-                tbrow.addView(t7v);
+                        TextView t6v = new TextView(this.getActivity());
+                        t6v.setText("" + tournament.getTable()[x].getLost());
+                        t6v.setTextColor(Color.BLACK);
+                        t6v.setTextSize(18);
+                        t6v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t6v);
 
-                TextView t8v = new TextView(this.getActivity());
-                t8v.setText("" + tournament.getTable()[i].getTablePoints());
-                t8v.setTextColor(Color.BLACK);
-                t8v.setTextSize(18);
-                t8v.setGravity(Gravity.CENTER);
-                tbrow.addView(t8v);
+                        TextView t7v = new TextView(this.getActivity());
+                        t7v.setText("" + tournament.getTable()[x].getGoalDifference().getPointTeam1() + ":" + tournament.getTable()[x].getGoalDifference().getPointTeam2());
+                        t7v.setTextColor(Color.BLACK);
+                        t7v.setTextSize(18);
+                        t7v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t7v);
 
-                stk.addView(tbrow);
+                        TextView t8v = new TextView(this.getActivity());
+                        t8v.setText("" + tournament.getTable()[x].getTablePoints());
+                        t8v.setTextColor(Color.BLACK);
+                        t8v.setTextSize(18);
+                        t8v.setGravity(Gravity.CENTER);
+                        tbrow.addView(t8v);
+
+                        stk.addView(tbrow);
+                    }
+                }
             }
         }
     }

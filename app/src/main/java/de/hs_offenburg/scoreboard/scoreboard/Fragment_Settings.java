@@ -297,12 +297,6 @@ public class Fragment_Settings extends Fragment{
         }
     }
 
-    private void updateButtons(Context ct) {
-        //TODO: alles was an info zur aktuellen Seite gehört
-        //research Devices
-
-    }
-
     //add paired devices to SpinnerList
     private void listPairedDevices(BluetoothAdapter bt) {
         if (bt == null || !bt.isEnabled())
